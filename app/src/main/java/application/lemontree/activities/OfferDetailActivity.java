@@ -312,4 +312,68 @@ public class OfferDetailActivity extends AppCompatActivity {
     private interface ChatCheckCallback {
         void onChatChecked(String chatId);
     }
+
+
+    /**
+     * Create a new chat between two users based on an offer
+     *
+     * @param title
+     * @param currentUserId
+     * @param createdByUserId
+     * @param createdByUsername
+     * @param offerId
+     */
+    private void createNewChat(String title, String currentUserId, String createdByUserId,
+                               String createdByUsername, String offerId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // First, retrieve current user's details from Firestore
+        db.collection("profiles").document(currentUserId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String currentUserName = documentSnapshot.getString("username");
+                        String currentUserProfileUrl = documentSnapshot.getString("profilePictureURL");
+
+                        List<String> participants = Arrays.asList(currentUserId, createdByUserId);
+                        List<String> participantNames = Arrays.asList(currentUserName, createdByUsername);
+                        List<String> profilePictureURLs = Arrays.asList(currentUserProfileUrl, offerUserURL);
+
+                        // Now that we have the details, proceed to create the new chat
+                        Map<String, Object> chatData = new HashMap<>();
+                        chatData.put("title", title);  // Empty initial message
+                        chatData.put("lastMessage", "");  // Empty initial message
+                        chatData.put("lastMessageTimestamp", FieldValue.serverTimestamp());
+                        chatData.put("participants", participants);
+                        chatData.put("participantsNames", participantNames);
+                        chatData.put("profilePictureURLs", profilePictureURLs);
+                        chatData.put("offerId", offerId);  // Associate the chat with the offer
+
+                        Log.d(TAG, "Participants " + participants);
+                        Log.d(TAG, "User names " + Arrays.asList(currentUserName, createdByUsername));
+                        Log.d(TAG, "User pictures " + Arrays.asList(currentUserProfileUrl, offerUserURL));
+                        Log.d(TAG, "Offer ID " + offerId);
+
+                        // Create the chat in Firestore
+                        db.collection("chats").add(chatData)
+                                .addOnSuccessListener(documentReference -> {
+                                    String newChatId = documentReference.getId();
+
+                                    // Launch ChatActivity with the newly created chatId
+                                    Intent intent = new Intent(OfferDetailActivity.this, ChatActivity.class);
+                                    intent.putExtra("chatId", newChatId);
+                                    intent.putExtra("offerId", offerId);
+                                    intent.putExtra("otherParticipantID", createdByUserId);
+                                    intent.putExtra("otherParticipantName", createdByUsername);
+                                    intent.putExtra("myProfilePicture", currentUserProfileUrl);
+                                    startActivity(intent);
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("OfferDetailActivity", "Error creating new chat", e);
+                                });
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("OfferDetailActivity", "Failed to retrieve current user profile", e);
+                });
+    }
 }
