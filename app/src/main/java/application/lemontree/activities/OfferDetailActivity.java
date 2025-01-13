@@ -268,4 +268,48 @@ public class OfferDetailActivity extends AppCompatActivity {
                     Log.e(TAG, "Failed to retrieve current user profile", e);
                 });
     }
+
+    // check if this offer already has chat
+    private void checkIfChatExistsForOfferAndUsers(String offerId, String userId1, String userId2, ChatCheckCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Ensure participants are sorted
+        List<String> participants = Arrays.asList(userId1, userId2);
+        Collections.sort(participants);
+
+        Log.d(TAG, "Checking chat for offerId: " + offerId + ", participants: " + participants);
+
+        // Check Firestore for an existing chat associated with this offerId and participants
+        db.collection("chats")
+                .whereEqualTo("offerId", offerId)
+                .whereArrayContains("participants", userId1)  // You can use whereArrayContains for both participants
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            List<String> storedParticipants = (List<String>) document.get("participants");
+                            if (storedParticipants.contains(userId1) && storedParticipants.contains(userId2)) {
+                                Log.d(TAG, "Chat exists!");
+                                callback.onChatChecked(document.getId());
+                                return;
+                            }
+                        }
+                        Log.d(TAG, "No chat found.");
+                        callback.onChatChecked(null);
+                    } else {
+                        Log.d(TAG, "No chat found, creating a new one.");
+                        callback.onChatChecked(null);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error checking chat", e);
+                    callback.onChatChecked(null);
+                });
+    }
+
+
+    // Callback interface to handle the result of checking for an existing chat
+    private interface ChatCheckCallback {
+        void onChatChecked(String chatId);
+    }
 }
