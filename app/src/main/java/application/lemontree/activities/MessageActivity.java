@@ -101,4 +101,32 @@ public class MessageActivity extends AppCompatActivity {
                 .replace(R.id.nav_container, new NavBarFragment())
                 .commit();
     }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume");
+        super.onResume();
+        if (mAuth.getCurrentUser() != null) {
+            db.collection("chats").whereArrayContains("participants",
+                            mAuth.getCurrentUser().getUid())
+                    .orderBy("lastMessageTimestamp", Query.Direction.DESCENDING)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            retrievedChatsList.clear();
+                            if (!task.getResult().isEmpty()) {
+                                for (QueryDocumentSnapshot chat : task.getResult()) {
+                                    Log.d(TAG, "Chat document: " + chat.getData());
+                                    retrievedChatsList.add(chat);
+                                }
+                                messageAdapter.notifyDataSetChanged();
+                            } else {
+                                Log.d(TAG, "No chats found");
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    });
+        }
+    }
 }
