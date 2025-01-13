@@ -222,4 +222,50 @@ public class OfferDetailActivity extends AppCompatActivity {
                     Log.e("OfferDetailActivity", "Error fetching offer details", e);
                 });
     }
+
+    private void archiveOffer(String offerId) {
+        db.collection("offers").document(offerId)
+                .update("status", "archive")
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Offer archived", Toast.LENGTH_SHORT).show();
+                    archiveButton.setText("Offer Archived");
+                    archiveButton.setEnabled(false);
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error archiving offer", e));
+    }
+
+    private void openChat() {
+        Log.d(TAG, "Attempting to open chat for offer: " + offerId);
+        checkIfChatExistsForOfferAndUsers(offerId, currentUserId, offerUserId, (existingChatId) -> {
+            if (existingChatId != null) {
+                Log.d(TAG, "Chat already exists. Opening existing chat.");
+                openExistingChat(existingChatId);
+            } else {
+                Log.d(TAG, "No chat found. Creating a new one.");
+                createNewChat("Offer: " + title + " by " + offerUserName, currentUserId, offerUserId, offerUserName, offerId);
+            }
+        });
+    }
+
+    private void openExistingChat(String existingChatId) {
+        // Retrieve current user's profile picture from Firestore
+        db.collection("profiles").document(currentUserId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String currentUserProfileUrl = documentSnapshot.getString("profilePictureURL");
+
+                        Intent intent = new Intent(OfferDetailActivity.this, ChatActivity.class);
+                        intent.putExtra("chatId", existingChatId);
+                        intent.putExtra("otherParticipantID", offerUserId);
+                        intent.putExtra("otherParticipantName", offerUserName);
+                        intent.putExtra("offerId", offerId);
+                        intent.putExtra("myProfilePicture", currentUserProfileUrl);
+                        intent.putExtra("otherProfilePicture", offerUserURL);
+                        startActivity(intent);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to retrieve current user profile", e);
+                });
+    }
 }
