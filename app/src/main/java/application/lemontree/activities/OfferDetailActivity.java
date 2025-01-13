@@ -109,4 +109,117 @@ public class OfferDetailActivity extends AppCompatActivity {
                 .replace(R.id.nav_container, new NavBarFragment())
                 .commit();
     }
+
+    private void getOfferDetails(String offerId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("offers").document(offerId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Extract data
+                        title = documentSnapshot.getString("offerName");
+                        String description = documentSnapshot.getString("offerDescription");
+                        String category = documentSnapshot.getString("offerCategory");
+                        String availableDate = documentSnapshot.getString("offerAvailableDate");
+                        String pickUpLocation = documentSnapshot.getString("offerPickUpLocation");
+                        String imageUrl = documentSnapshot.getString("imageUrl");
+                        Timestamp createdAt = documentSnapshot.getTimestamp("createdAt");
+                        String createdById = documentSnapshot.getString("createdBy");
+                        String createdByUsername = documentSnapshot.getString("createdByUsername");
+                        String profilePictureUrl = documentSnapshot.getString("userProfileUrl");
+                        String status = documentSnapshot.getString("status");
+
+                        // Set data into views
+                        offerTitleTextView.setText(title);
+                        offerDescriptionTextView.setText(description);
+                        categoryTextView.setText(category);
+                        offerAvailableDateTextView.setText(availableDate);
+                        offerPickUpLocationTextView.setText(pickUpLocation);
+
+//                        if (createdAt != null) {
+//                            createdAtTextView.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(createdAt.toDate()));
+//                        }
+
+                        // Load offer image
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
+                            Log.d("OfferDetailActivity", "Image" + imageUrl);
+                            Glide.with(this)
+                                    .load(imageUrl)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(offerImageView);
+                        } else {
+                            Log.e("OfferDetailActivity", "Image URL is null or empty");
+                        }
+
+                        // Set created by username
+                        if (createdByUsername != null) {
+                            offerUserId = createdById;
+                            offerUserName = createdByUsername;
+                            createdByUsernameTextView.setText("Offered by " + createdByUsername);
+//                            chatButton.setText("Chat to " + createdByUsername);
+                        }
+
+                        // Check if the current user is the creator of the offer
+                        if (currentUserId.equals(createdById)) {
+//                            // Current user is the creator of the offer
+//                            chatButton.setText("Open my messages");
+//                            chatButton.setOnClickListener(v -> {
+//                                // Open the user's own messages
+//                                Intent intent = new Intent(OfferDetailActivity.this, MessageActivity.class);
+//                                startActivity(intent);
+//                            });
+                            // Hide the entire offerCard if the current user is the creator
+                            ConstraintLayout offerCard = findViewById(R.id.offerCard);
+                            offerCard.setVisibility(View.GONE);
+
+                            TextView offerDetailTitle = findViewById(R.id.offerDetailTitle);
+                            offerDetailTitle.setText("My Offer Item Detail");
+
+                            // Show archive button or archived status based on offer's status
+                            if (status != null && status.equals("archive")) {
+                                archiveButton.setVisibility(View.VISIBLE); // Hide the archive button
+                                archiveButton.setText("Offer Archived");
+                                // Disable the button
+                                archiveButton.setEnabled(false);
+                            } else {
+                                archiveButton.setVisibility(View.VISIBLE); // Show the archive button
+                            }
+
+                            // Handle archive button click event
+                            archiveButton.setOnClickListener(v -> {
+                                // Create an AlertDialog to confirm the action
+                                new AlertDialog.Builder(OfferDetailActivity.this)
+                                        .setTitle("Archive Offer")
+                                        .setMessage("Are you sure you want to archive this offer? It will no longer be visible to other users.")
+                                        .setPositiveButton("Yes", (dialog, which) -> {
+                                            // If the user confirms, archive the offer
+                                            archiveOffer(offerId);
+                                        })
+                                        .setNegativeButton("No", (dialog, which) -> {
+                                            // If the user cancels, just dismiss the dialog
+                                            dialog.dismiss();
+                                        })
+                                        .show();
+                            });
+
+                        } else {
+                            // Current user is not the creator of the offer
+                            chatButton.setText("Chat to " + createdByUsername);
+                            chatButton.setOnClickListener(v -> openChat());
+                        }
+
+                        // Load profile picture of uploader
+                        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                            offerUserURL = profilePictureUrl;
+                            Glide.with(OfferDetailActivity.this)
+                                    .load(profilePictureUrl)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(profileImageView);
+                        }
+
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("OfferDetailActivity", "Error fetching offer details", e);
+                });
+    }
 }
