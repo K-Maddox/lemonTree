@@ -62,4 +62,37 @@ public class NavBarFragment extends Fragment {
 
         return view;
     }
+
+    // update nav bar color to show the current page
+    private void updateNavBarColors(Button currentButton) {
+        resetNavBarColors();
+
+        // change the icon color
+        currentButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        currentButton.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+    }
+
+    // reset colors of all buttons of nav bar
+    private void resetNavBarColors() {
+        offerButton.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.gray)));
+        wantButton.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.gray)));
+        messageButton.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.gray)));
+        homeButton.setCompoundDrawableTintList(ColorStateList.valueOf(getResources().getColor(R.color.gray)));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // decide which button should be highlighted based on the current activity
+        if (getActivity() instanceof OfferActivity) {
+            updateNavBarColors(offerButton);
+        } else if (getActivity() instanceof WantedActivity) {
+            updateNavBarColors(wantButton);
+        } else if (getActivity() instanceof MessageActivity) {
+            updateNavBarColors(messageButton);
+        } else if (getActivity() instanceof Profile) {
+            updateNavBarColors(homeButton);
+        }
+    }
 }
