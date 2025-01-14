@@ -19,4 +19,47 @@ import application.lemontree.activities.Profile;
 import application.lemontree.activities.WantedActivity;
 
 public class NavBarFragment extends Fragment {
+
+    private Button offerButton;
+    private Button wantButton;
+    private Button messageButton;
+    private Button homeButton;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.nav_bar, container, false);
+
+        offerButton = view.findViewById(R.id.btn_nav_offer);
+        wantButton = view.findViewById(R.id.btn_nav_want);
+        messageButton = view.findViewById(R.id.btn_nav_message);
+        homeButton = view.findViewById(R.id.btn_nav_home);
+
+        offerButton.setOnClickListener(v -> {
+            updateNavBarColors(offerButton);
+            startActivity(new Intent(getActivity(), OfferActivity.class));
+            getActivity().overridePendingTransition(0, 0);
+        });
+
+        wantButton.setOnClickListener(v -> {
+            updateNavBarColors(wantButton);
+            startActivity(new Intent(getActivity(), WantedActivity.class));
+            getActivity().overridePendingTransition(0, 0);
+        });
+
+        messageButton.setOnClickListener(v -> {
+            updateNavBarColors(messageButton);
+            startActivity(new Intent(getActivity(), MessageActivity.class));
+            getActivity().overridePendingTransition(0, 0);
+        });
+
+        homeButton.setOnClickListener(v -> {
+            updateNavBarColors(homeButton);
+            startActivity(new Intent(getActivity(), Profile.class));
+            getActivity().overridePendingTransition(0, 0);
+        });
+
+        return view;
+    }
 }
