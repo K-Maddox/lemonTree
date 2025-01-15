@@ -50,4 +50,88 @@ import application.lemontree.R;
 import application.lemontree.fragments.NavBarFragment;
 
 public class Profile extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private ImageView profileImageView;
+    private TextView usernameTextView, emailTextView, cityTextView;
+
+    private Button myOffersButton;
+    private Button myWantedButton;
+    private ImageButton settingsButton;
+
+    // URL for default profile image in Firebase Storage
+    private final String defaultProfilePictureUrl = "https://firebasestorage.googleapis.com/v0/b/lemontreedev-eef1e.appspot.com/o/ProfilePictures%2Fdefaultprofile.jpg?alt=media&token=70136e46-db11-405b-a541-a7fc5e501914";
+
+    private static final int CAMERA_PERM_CODE = 101;
+    private static final int REQUEST_IMAGE_CAPTURE = 102;
+    private static final int REQUEST_GALLERY_CODE = 103;
+    private String currentPhotoPath;
+    private Uri imageUri;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);  // Links to the XML layout for Profile
+
+        // Log location
+        Log.d("Profile Page", "Inside the profile page");
+
+        // Initialize Firebase Auth and Firestore
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        // Initialize views
+        profileImageView = findViewById(R.id.profileImageView);
+        usernameTextView = findViewById(R.id.usernameTextView);
+        emailTextView = findViewById(R.id.emailTextView);
+        cityTextView = findViewById(R.id.cityTextView);
+        myOffersButton = findViewById(R.id.btn_my_offers);
+        myWantedButton = findViewById(R.id.btn_my_wanted);
+        settingsButton = findViewById(R.id.btn_settings);
+
+
+        // Get the current logged-in user
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // Fetch user data from Firestore
+            getUserProfile(currentUser.getUid());
+
+        }
+
+
+        // Set onClickListeners for the new buttons
+        myOffersButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Profile.this, MyOffersActivity.class);
+            startActivity(intent);
+        });
+
+        myWantedButton.setOnClickListener(v -> {
+            Log.d("ProfileActivity", "My Wanted button was clicked");
+            Intent intent = new Intent(Profile.this, MyWantedActivity.class);
+            startActivity(intent);
+        });
+
+        settingsButton.setOnClickListener(v -> {
+            Log.d("ProfileActivity", "Settings button was clicked");
+            Intent intent = new Intent(Profile.this, SettingsActivity.class);
+            startActivity(intent);
+        });
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.nav_container, new NavBarFragment())
+                .commit();
+
+        // Set click listener for profile image
+        profileImageView.setOnClickListener(v -> {
+            new AlertDialog.Builder(Profile.this)
+                    .setTitle("Edit Image")
+                    .setMessage("Would you like to change your image?")
+                    .setPositiveButton("Yes", (dialog, which) -> askCameraPermission())
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
+    }
+
 }
