@@ -134,4 +134,53 @@ public class Profile extends AppCompatActivity {
         });
     }
 
+    private void getUserProfile(String userId) {
+        db.collection("profiles").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Get the user data and log it
+                        String username = documentSnapshot.getString("username");
+                        String email = documentSnapshot.getString("email");
+                        String imageUrl = documentSnapshot.getString("profilePictureURL");
+
+                        Log.d("Profile Page", "Username: " + username);
+                        Log.d("Profile Page", "Email: " + email);
+                        Log.d("Profile Page", "Image: " + imageUrl);
+
+                        // Extract the location (latitude, longitude)
+                        GeoPoint lastLocation = documentSnapshot.getGeoPoint("lastLocation");
+                        if (lastLocation != null) {
+                            double latitude = lastLocation.getLatitude();
+                            double longitude = lastLocation.getLongitude();
+
+                            Log.d("Profile Page", "Long and lat: " + latitude + " " + longitude);
+
+                            // Get nearest city using the Geocoder
+                            findNearestCity(latitude, longitude);
+                        }
+
+                        // Set the user info to the views
+                        usernameTextView.setText(username);
+                        emailTextView.setText(email);
+
+                        // Load the profile picture with Glide
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
+                            Glide.with(this)
+                                    .load(imageUrl)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .error(Glide.with(this).load(defaultProfilePictureUrl))  // Default image if URL is invalid
+                                    .into(profileImageView);
+                        } else {
+                            // Load default profile picture from Firebase Storage if no URL provided
+                            Glide.with(this)
+                                    .load(defaultProfilePictureUrl)
+                                    .into(profileImageView);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProfileActivity", "Error fetching profile", e);
+                });
+    }
+
 }
