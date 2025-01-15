@@ -217,4 +217,33 @@ public class Profile extends AppCompatActivity {
         });
         builder.show();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERM_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showImagePickerOptions();
+            } else {
+                Toast.makeText(this, "Camera Permission is Required to Use Camera.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            File f = new File(currentPhotoPath);
+            imageUri = Uri.fromFile(f);
+            profileImageView.setImageURI(imageUri);
+            uploadProfilePictureToFirebase(imageUri);
+        }
+
+        if (requestCode == REQUEST_GALLERY_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            imageUri = data.getData();
+            profileImageView.setImageURI(imageUri);
+            uploadProfilePictureToFirebase(imageUri);
+        }
+    }
 }
