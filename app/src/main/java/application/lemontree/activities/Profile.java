@@ -246,4 +246,45 @@ public class Profile extends AppCompatActivity {
             uploadProfilePictureToFirebase(imageUri);
         }
     }
+
+    private void uploadProfilePictureToFirebase(Uri uri) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String userId = user.getUid();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        StorageReference imageRef = storageRef.child("ProfilePictures/" + userId + "/" + timeStamp + "." + getFileExt(uri));
+
+        UploadTask uploadTask = imageRef.putFile(uri);
+
+        uploadTask.addOnFailureListener(exception -> {
+            Toast.makeText(this, "Profile picture upload failed", Toast.LENGTH_SHORT).show();
+        }).addOnSuccessListener(taskSnapshot -> {
+            imageRef.getDownloadUrl().addOnSuccessListener(uriResult -> {
+                String imageUrl = uriResult.toString();
+
+                DocumentReference userRef = db.collection("profiles").document(userId);
+                userRef.update("profilePictureURL", imageUrl)
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(this, "Profile picture updated successfully", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Error updating profile picture URL", Toast.LENGTH_SHORT).show();
+                        });
+            });
+        });
+    }
+
+    private String getFileExt(Uri uri) {
+        if (uri == null) return null;
+        ContentResolver c = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(uri));
+    }
 }
