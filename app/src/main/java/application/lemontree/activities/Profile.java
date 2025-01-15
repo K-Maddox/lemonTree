@@ -183,4 +183,38 @@ public class Profile extends AppCompatActivity {
                 });
     }
 
+    private void askCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            }, CAMERA_PERM_CODE);
+        } else {
+            showImagePickerOptions();
+        }
+    }
+
+    private void showImagePickerOptions() {
+        CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose an option");
+        builder.setItems(options, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    dispatchTakePictureIntent();
+                    break;
+                case 1:
+                    Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(gallery, REQUEST_GALLERY_CODE);
+                    break;
+                default:
+                    dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
 }
