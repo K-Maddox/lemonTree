@@ -27,6 +27,16 @@ import application.lemontree.activities.WelcomeActivity;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    Preference usernamePreference;
+    Preference emailPreference;
+    SwitchPreferenceCompat notificationPreference;
+    SwitchPreferenceCompat offernotificationPreference;
+    SwitchPreferenceCompat chatnotificationPreference;
+    Preference logoutPreference;
+
+    FirebaseAuth mAuth;
+    FirebaseFirestore db;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
