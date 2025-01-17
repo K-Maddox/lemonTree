@@ -190,4 +190,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
+    private void updatePrefrencesUI(DocumentSnapshot documentSnapshot) {
+        usernamePreference.setSummary(documentSnapshot.getString("username"));
+        emailPreference.setSummary(documentSnapshot.getString("email"));
+    }
 }
