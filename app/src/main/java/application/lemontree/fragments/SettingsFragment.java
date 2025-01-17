@@ -170,4 +170,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             Toast.LENGTH_LONG).show();
                 }
             });
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //retrieve user data
+        if (mAuth.getCurrentUser() != null) {
+            db.collection("profiles").document(mAuth.getCurrentUser().getUid()).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            updatePrefrencesUI(documentSnapshot);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(requireActivity(), "Settings could not be synchronized", Toast.LENGTH_LONG)
+                                .show();
+                    });
+        }
+    }
+
 }
