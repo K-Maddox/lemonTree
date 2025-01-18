@@ -116,4 +116,46 @@ public class OfferActivity extends AppCompatActivity {
         filterDialog = new FilterDialogFragment();
     }
 
+    private void setupButtons() {
+        // add offer button set up
+        addButton = findViewById(R.id.addOfferButton);
+        addButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OfferActivity.this,
+                        CreateOfferActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // filter button set up
+        filterButton = findViewById(R.id.filterButton);
+        filterButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilterHelper.showFilterDialog(
+                        getSupportFragmentManager(),
+                        filterDialog,
+                        radius, // The current radius
+                        newRadius -> {
+                            // This is the callback function that will be called when the filter is applied
+                            radius = newRadius; // Update the radius in your activity
+                            getOffersInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude())); // Re-fetch offers with the new radius
+                        }
+                );
+            }
+        });
+
+        // map button set up
+        mapButton = findViewById(R.id.mapButton);
+        mapButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OfferActivity.this, MapActivity.class);
+                intent.putExtra("source", "offer");
+                intent.putExtra("radius", radius);  // Pass the radius value
+                startActivity(intent);
+            }
+        });
+    }
 }
