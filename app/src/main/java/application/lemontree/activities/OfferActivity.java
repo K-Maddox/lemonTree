@@ -247,4 +247,26 @@ public class OfferActivity extends AppCompatActivity {
         return o;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        locationGetService.getLastLocation(new LocationGetService.OnLocationReceivedListener() {
+            @Override
+            public void onLocationReceived(Location location) {
+                currentLocation = location;
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+
+                getOffersInRadius(new GeoPoint(latitude, longitude));
+            }
+
+            @Override
+            public void onLocationError(String error) {
+                // Handle the error
+                Toast.makeText(OfferActivity.this, error, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
 }
