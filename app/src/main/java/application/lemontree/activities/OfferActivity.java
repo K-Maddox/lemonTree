@@ -158,4 +158,48 @@ public class OfferActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setupSearchBar() {
+        searchBar = findViewById(R.id.offerSearchView);
+
+        searchBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            // this is called when the user searches something and presses enter
+            public boolean onQueryTextSubmit(String s) {
+                filteredDataList.clear();
+                for (Offer o : dataList) {
+                    String a = o.getOfferName().toLowerCase();
+                    String b = s.toLowerCase();
+                    if (a.contains(b)) {
+                        filteredDataList.add(o);
+                    }
+                }
+
+                offerAdapter.notifyDataSetChanged();
+                return true;
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            // this is called every time the text is changed in the search box
+            public boolean onQueryTextChange(String s) {
+                filteredDataList.clear();
+                for (Offer o : dataList) {
+                    String a = o.getOfferName().toLowerCase();
+                    String b = s.toLowerCase();
+                    if (a.contains(b)) {
+                        filteredDataList.add(o);
+                    }
+                }
+
+                offerAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
+    }
 }
