@@ -42,6 +42,7 @@ import application.lemontree.models.Offer;
 import application.lemontree.services.LocationGetService;
 
 public class OfferActivity extends AppCompatActivity {
+
     private FirebaseAuth mAuth;
 
     private RecyclerView recyclerView;
@@ -115,6 +116,7 @@ public class OfferActivity extends AppCompatActivity {
 
         filterDialog = new FilterDialogFragment();
     }
+
 
     private void setupButtons() {
         // add offer button set up
@@ -221,6 +223,7 @@ public class OfferActivity extends AppCompatActivity {
             }
         }
     }
+
 
     /**
      * Given a document snapshot, this method extracts the data from the database, and yields
