@@ -269,4 +269,79 @@ public class OfferActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Get all offers from Firestore in a given radius (approx) from a given location
+     *
+     * @param location user's location
+     */
+    @SuppressLint({"NotifyDataSetChanged", "DefaultLocale"})
+    public void getOffersInRadius(GeoPoint location) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // First do a bounding box query to find offers in an area that includes the radius.
+        // This is done to only query only the offers that are the approximate area and prevents
+        // loading offers that are far away.
+        // 111 can be used as approximate conversion from kilometers to long/lat for Bounding Box
+        // using 110 to make sure not missing entries on the edge (a bit of buffer space)
+        double lowerLat = location.getLatitude() - ((double) radius / 110);
+        double upperLat = location.getLatitude() + ((double) radius / 110);
+        // Longitude needs to account for the the distance between lines of longitude -> using cos
+        double lowerLng =
+                location.getLongitude() - ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+        double upperLng =
+                location.getLongitude() + ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+
+        db.collection("offers")
+                .whereGreaterThanOrEqualTo("location", new GeoPoint(lowerLat, lowerLng))
+                .whereLessThanOrEqualTo("location", new GeoPoint(upperLat, upperLng))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) Log.i("getOffersInRadius", "No offers " +
+                            "found in radius");
+
+                    dataList.clear();
+                    filteredDataList.clear();
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        return; // no reason to bother filtering.
+                    }
+
+                    // add all filtered documents.
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        Offer o = getOfferFromDocumentSnapshot(document);
+
+                        // filter out non-active offers
+                        if (!"active".equalsIgnoreCase(o.getStatus())) {
+                            continue;
+                        }
+
+                        GeoPoint offerLocation = document.getGeoPoint("location");
+                        String title = document.getString("title");
+
+                        // determine the actual distance to offer
+                        if (offerLocation != null) {
+                            float[] results = new float[1];
+                            Location.distanceBetween(location.getLatitude(),
+                                    location.getLongitude(), offerLocation.getLatitude(),
+                                    offerLocation.getLongitude(),
+                                    results);
+                            float distanceInMeters = results[0];
+                            float distanceInKilometers = distanceInMeters / 1000;
+                            Log.v("getOffersInRadius",
+                                    "Offer: " + title + " Distance: " + distanceInKilometers +
+                                            " km");
+                            o.distance = String.format("%.2f km", distanceInKilometers);
+
+                            if (distanceInKilometers <= radius) {
+                                dataList.add(o);
+                                filteredDataList.add(o);
+                            }
+
+                        }
+                    }
+                    offerAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("getOffersInRadius", "Error getting documents", e);
+                });
+    }
 }
