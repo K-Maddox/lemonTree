@@ -28,4 +28,68 @@ public class User {
         this.newOfferRadius = newOfferRadius;
         this.profilePictureURL = profilePictureURL;
     }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public GeoPoint getLastLocation() {
+        return lastLocation;
+    }
+
+    public boolean isNewOfferNotification() {
+        return newOfferNotification;
+    }
+
+    public boolean isNewChatNotification() {
+        return newChatNotification;
+    }
+
+    public void setNewChatNotification(boolean newChatNotification) {
+        this.newChatNotification = newChatNotification;
+    }
+
+    public int getNewOfferRadius() {
+        return newOfferRadius;
+    }
+
+    public String getProfilePictureURL() {
+        return profilePictureURL;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setLastLocation(GeoPoint lastLocation) {
+        this.lastLocation = lastLocation;
+    }
+
+    public void setNewOfferNotification(boolean newOfferNotification) {
+        this.newOfferNotification = newOfferNotification;
+    }
+
+    public void setNewOfferRadius(int newOfferRadius) {
+        this.newOfferRadius = newOfferRadius;
+    }
+
+    public void setProfilePictureURL(String profilePictureURL) {
+        this.profilePictureURL = profilePictureURL;
+    }
 }
