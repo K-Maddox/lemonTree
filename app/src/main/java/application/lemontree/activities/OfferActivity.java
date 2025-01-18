@@ -70,5 +70,50 @@ public class OfferActivity extends AppCompatActivity {
     private Location currentLocation;
     private FilterDialogFragment filterDialog;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_offer);
+
+        // Check if location permission is granted
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request for it
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
+        } else {
+            // Permission is granted, proceed with location-based functionality
+            locationGetService = new LocationGetService(this);
+        }
+
+        locationGetService = new LocationGetService(this);
+
+
+        recyclerView = findViewById(R.id.offerRecyclerView);
+        dataList = new ArrayList<>();
+        filteredDataList = new ArrayList<>();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        offerAdapter = new OfferAdapter(filteredDataList, this);
+        recyclerView.setAdapter(offerAdapter);
+
+        // Create a GestureDetector to detect single taps
+        GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;  // Detect single tap
+            }
+        });
+
+        setupButtons();
+        setupSearchBar();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.nav_container, new NavBarFragment())
+                .commit();
+
+        filterDialog = new FilterDialogFragment();
+    }
 
 }
