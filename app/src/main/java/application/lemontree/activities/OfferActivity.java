@@ -200,6 +200,51 @@ public class OfferActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            // Check if permission was granted or denied
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed with location
+                locationGetService = new LocationGetService(this);
+            } else {
+                // Permission denied, show a fallback or explanation
+                new AlertDialog.Builder(this)
+                        .setTitle("Location Permission Required")
+                        .setMessage("This app requires location permission to show nearby offers. Please enable it in settings.")
+                        .setPositiveButton("OK", null)
+                        .show();
+            }
+        }
+    }
+
+    /**
+     * Given a document snapshot, this method extracts the data from the database, and yields
+     * an Offer object with the appropriate data.
+     *
+     * @param document the document snapshot to convert
+     * @return An Offer object of the document.
+     */
+    protected Offer getOfferFromDocumentSnapshot(@NonNull DocumentSnapshot document) {
+        Offer o = new Offer();
+
+        o.setOfferName(document.getString("offerName"));
+        o.setOfferId(document.getId());
+        o.setImageUrl(document.getString("imageUrl"));
+        o.setUserProfileUrl(document.getString("userProfileUrl"));
+        o.setCreatedByUsername(document.getString("createdByUsername"));
+        o.setCreatedBy(document.getString("createdBy"));
+        o.setCreatedAt(document.getTimestamp("createdAt"));
+        // Get status, default to "active" if null
+        String status = document.getString("status");
+        o.setStatus(status != null ? status : "active");
+        o.setLocation(document.getGeoPoint("location"));
+
+        return o;
+    }
+
 }
