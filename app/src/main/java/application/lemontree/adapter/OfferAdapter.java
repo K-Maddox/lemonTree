@@ -112,6 +112,28 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         } catch (Exception ignored) {
 
         }
+    }
 
+    @Override
+    public int getItemCount() {
+        return offerList.size();
+    }
+
+    public static class OfferViewHolder extends RecyclerView.ViewHolder {
+
+        TextView titleTextView, // title text view for the offer
+                createdAtTextView, // unused at the moment. I think some null checks will be needed if it's used
+                subTextView; // subtitle for offer previews
+        ImageView profileImageView, // image for the profile
+                previewImageView; // image for item
+
+        public OfferViewHolder(View itemView) {
+            super(itemView);
+            titleTextView = itemView.findViewById(R.id.offerTitleTextView);
+//            createdAtTextView = itemView.findViewById(R.id.createdAtTextView);
+            subTextView = itemView.findViewById(R.id.subTextView);
+            profileImageView = itemView.findViewById(R.id.offerImageView);
+            previewImageView = itemView.findViewById(R.id.offerPreviewImageView);
+        }
     }
 }
