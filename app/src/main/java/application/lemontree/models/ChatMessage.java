@@ -26,4 +26,55 @@ public class ChatMessage {
         this.timestamp = timestamp;
         this.isRead = isRead;
     }
+    //    //public String getMessageId() {
+//        return messageId;
+//    }
+//
+//    public void setMessageId(String messageId) {
+//        this.messageId = messageId;
+//    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public String getReceiverId() {
+        return receiverId;
+    }
+
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
+    }
+
+    public String getMessageText() {
+        return messageText;
+    }
+
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public long getTimestampInMillis() {
+        return timestamp.toDate().getTime();
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
+    }
 }
