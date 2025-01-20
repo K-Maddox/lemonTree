@@ -95,4 +95,36 @@ public class WantedActivity extends AppCompatActivity {
         // Fetch last location when the activity starts
         fetchLocationAndData();
     }
+
+    private void setupButtons() {
+        // Add want button set up
+        addButton = findViewById(R.id.addWantedButton);
+        addButton.setOnClickListener(view -> {
+            Intent intent = new Intent(WantedActivity.this, CreateWantActivity.class);
+            startActivity(intent);
+        });
+
+        // Filter button set up
+        filterButton = findViewById(R.id.filterButton);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilterHelper.showFilterDialog(
+                        getSupportFragmentManager(),
+                        filterDialog,
+                        radius, // The current radius
+                        newRadius -> {
+                            radius = newRadius; // Update the radius in your activity
+                            // Check if currentLocation is not null before calling getOffersInRadius
+                            if (currentLocation != null) {
+                                getWantsInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                            } else {
+                                // Handle the case where location is not available yet
+                                Toast.makeText(WantedActivity.this, "Location not available", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+            }
+        });
+    }
 }
