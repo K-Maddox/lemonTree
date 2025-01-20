@@ -126,5 +126,17 @@ public class WantedActivity extends AppCompatActivity {
                 );
             }
         });
+
+        // Map button set up
+        mapButton = findViewById(R.id.mapButton);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(WantedActivity.this, MapActivity.class);
+                intent.putExtra("source", "want");
+                intent.putExtra("radius", radius);  // Pass the radius value
+                startActivity(intent);
+            }
+        });
     }
 }
