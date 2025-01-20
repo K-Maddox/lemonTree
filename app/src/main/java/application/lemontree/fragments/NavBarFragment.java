@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import application.lemontree.R;
 import application.lemontree.activities.MessageActivity;
-import application.lemontreee.activities.OfferActivity;
+import application.lemontree.activities.OfferActivity;
 import application.lemontree.activities.Profile;
 import application.lemontree.activities.WantedActivity;
 
