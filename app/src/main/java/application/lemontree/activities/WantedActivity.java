@@ -139,4 +139,19 @@ public class WantedActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void fetchLocationAndData() {
+        locationGetService.getLastLocation(new LocationGetService.OnLocationReceivedListener() {
+            @Override
+            public void onLocationReceived(Location location) {
+                currentLocation = location;  // Store the current location
+                getWantsInRadius(new GeoPoint(location.getLatitude(), location.getLongitude()));  // Fetch wants within the radius
+            }
+
+            @Override
+            public void onLocationError(String error) {
+                Toast.makeText(WantedActivity.this, error, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
