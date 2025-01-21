@@ -203,4 +203,22 @@ public class WantedActivity extends AppCompatActivity {
         want.setLocation(document.getGeoPoint("location"));
         return want;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        locationGetService.getLastLocation(new LocationGetService.OnLocationReceivedListener() {
+            @Override
+            public void onLocationReceived(Location location) {
+                currentLocation = location; // Store the current location
+                getWantsInRadius(new GeoPoint(location.getLatitude(), location.getLongitude()));
+            }
+
+            @Override
+            public void onLocationError(String error) {
+                Toast.makeText(WantedActivity.this, error, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }
