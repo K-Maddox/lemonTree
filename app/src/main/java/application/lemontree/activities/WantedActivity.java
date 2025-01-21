@@ -186,4 +186,21 @@ public class WantedActivity extends AppCompatActivity {
             }
         });
     }
+
+    protected Want getWantFromDocumentSnapshot(@NonNull DocumentSnapshot document) {
+        Want want = new Want();
+        want.setWantId(document.getId());
+        want.setWantName(document.getString("wantName"));
+        want.setWantDescription(document.getString("wantDescription"));
+        want.setWantAvailableDate(document.getString("wantAvailableDate"));
+        want.setWantCategory(document.getString("wantCategory"));
+        want.setUserProfileUrl(document.getString("userProfileUrl"));
+        want.setCreatedByUsername(document.getString("createdByUsername"));
+        want.setCreatedAt(document.getTimestamp("createdAt"));
+        // Get status, default to "active" if null
+        String status = document.getString("status");
+        want.setStatus(status != null ? status : "active");
+        want.setLocation(document.getGeoPoint("location"));
+        return want;
+    }
 }
