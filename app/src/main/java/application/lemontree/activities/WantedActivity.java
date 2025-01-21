@@ -154,4 +154,36 @@ public class WantedActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setupSearchBar() {
+        searchBar = findViewById(R.id.wantedSearchView);
+        searchBar.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                filteredDataList.clear();
+                for (Want w : dataList) {
+                    if (w.getWantName().toLowerCase().contains(s.toLowerCase())) {
+                        filteredDataList.add(w);
+                    }
+                }
+                wantedAdapter.notifyDataSetChanged();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filteredDataList.clear();
+                for (Want w : dataList) {
+                    if (w.getWantName().toLowerCase().contains(s.toLowerCase())) {
+                        filteredDataList.add(w);
+                    }
+                }
+                wantedAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+    }
 }
