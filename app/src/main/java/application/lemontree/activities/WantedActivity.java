@@ -238,6 +238,24 @@ public class WantedActivity extends AppCompatActivity {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         dataList.clear();
                         filteredDataList.clear();
+                        for (DocumentSnapshot document : queryDocumentSnapshots) {
+                            Want want = getWantFromDocumentSnapshot(document);
+
+                            // filter out non-active wants
+                            if (!"active".equalsIgnoreCase(want.getStatus())) {
+                                continue;
+                            }
+
+                            // Compute the distance and set it
+                            if (want.getLocation() != null && currentLocation != null) {
+                                float[] results = new float[1];
+                                Location.distanceBetween(
+                                        currentLocation.getLatitude(),
+                                        currentLocation.getLongitude(),
+                                        want.getLocation().getLatitude(),
+                                        want.getLocation().getLongitude(),
+                                        results
+                                );
                                 float distanceInMeters = results[0];
                                 float distanceInKilometers = distanceInMeters / 1000;
                                 want.distance = String.format("%.2f km", distanceInKilometers);
