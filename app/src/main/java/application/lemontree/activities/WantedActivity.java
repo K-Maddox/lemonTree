@@ -221,4 +221,35 @@ public class WantedActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void getWantsInRadius(GeoPoint location) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        double lowerLat = location.getLatitude() - ((double) radius / 110);
+        double upperLat = location.getLatitude() + ((double) radius / 110);
+        double lowerLng = location.getLongitude() - ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+        double upperLng = location.getLongitude() + ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+
+        db.collection("wants")
+                .whereGreaterThanOrEqualTo("location", new GeoPoint(lowerLat, lowerLng))
+                .whereLessThanOrEqualTo("location", new GeoPoint(upperLat, upperLng))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        dataList.clear();
+                        filteredDataList.clear();
+                                float distanceInMeters = results[0];
+                                float distanceInKilometers = distanceInMeters / 1000;
+                                want.distance = String.format("%.2f km", distanceInKilometers);
+                            } else {
+                                want.distance = "Unknown distance";
+                            }
+                            dataList.add(want);
+                            filteredDataList.add(want);
+                        }
+                        wantedAdapter.notifyDataSetChanged();
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("getWantsInRadius", "Error getting documents", e));
+    }
 }
