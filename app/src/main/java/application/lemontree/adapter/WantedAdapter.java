@@ -31,4 +31,10 @@ public class WantedAdapter extends RecyclerView.Adapter<WantedAdapter.WantedView
         this.wantedList = wantedList;
         this.context = context;
     }
+
+    @Override
+    public WantedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.want_layout, parent, false);
+        return new WantedViewHolder(view);
+    }
 }
