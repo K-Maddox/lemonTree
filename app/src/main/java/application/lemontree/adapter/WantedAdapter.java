@@ -37,4 +37,23 @@ public class WantedAdapter extends RecyclerView.Adapter<WantedAdapter.WantedView
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.want_layout, parent, false);
         return new WantedViewHolder(view);
     }
+
+    @Override
+    public int getItemCount() {
+        return wantedList.size();
+    }
+
+    public static class WantedViewHolder extends RecyclerView.ViewHolder {
+
+        TextView titleTextView, subTextView;
+        ImageView profileImageView, previewImageView;
+
+        public WantedViewHolder(View itemView) {
+            super(itemView);
+            titleTextView = itemView.findViewById(R.id.wantedTitleTextView);
+            subTextView = itemView.findViewById(R.id.subTextView);
+//            profileImageView = itemView.findViewById(R.id.wantedProfileImageView);
+//            previewImageView = itemView.findViewById(R.id.wantedPreviewImageView);
+        }
+    }
 }
