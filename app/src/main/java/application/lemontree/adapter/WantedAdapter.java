@@ -42,6 +42,26 @@ public class WantedAdapter extends RecyclerView.Adapter<WantedAdapter.WantedView
     public void onBindViewHolder(WantedViewHolder holder, int position) {
         Want want = wantedList.get(position);
 
+        // Set the title and description
+        holder.titleTextView.setText(want.getWantName());
+//        holder.subTextView.setText(want.distance + " - " + want.getWantAvailableDate());
+        // Calculate the number of days ago
+        if (want.getCreatedAt() != null) {
+            Timestamp createdAt = want.getCreatedAt();
+            Date createdAtDate = createdAt.toDate();
+            long differenceInMillis = new Date().getTime() - createdAtDate.getTime();
+
+            // Calculate the difference in days
+            long differenceInDays = differenceInMillis / (1000 * 60 * 60 * 24);
+
+            // Determine the time text (Today or X days ago)
+            String timeText;
+            if (differenceInDays == 0) {
+                timeText = "Today";
+            } else {
+                timeText = differenceInDays + " days ago";
+            }
+
             // Use Geocoder to get the suburb (locality) based on the GeoPoint
             String suburb = "Unknown suburb";  // Default value if we can't fetch the suburb
             if (want.getLocation() != null) {
