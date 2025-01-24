@@ -39,6 +39,42 @@ public class WantedAdapter extends RecyclerView.Adapter<WantedAdapter.WantedView
     }
 
     @Override
+    public void onBindViewHolder(WantedViewHolder holder, int position) {
+        Want want = wantedList.get(position);
+
+            // Use Geocoder to get the suburb (locality) based on the GeoPoint
+            String suburb = "Unknown suburb";  // Default value if we can't fetch the suburb
+            if (want.getLocation() != null) {
+                Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(
+                            want.getLocation().getLatitude(),
+                            want.getLocation().getLongitude(),
+                            1
+                    );
+                    if (addresses != null && !addresses.isEmpty()) {
+                        suburb = addresses.get(0).getLocality();  // Get the locality (suburb)
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Set the text for subTextView with distance, suburb, and time
+            holder.subTextView.setText(want.distance + " - " + suburb + " - " + timeText);
+        } else {
+            holder.subTextView.setText(want.distance + " - Unknown suburb - Unknown time");
+        }
+
+        // Set OnClickListener
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, WantedDetailActivity.class);
+            intent.putExtra("wantId", want.getWantId());
+            context.startActivity(intent);
+        });
+    }
+
+    @Override
     public int getItemCount() {
         return wantedList.size();
     }
