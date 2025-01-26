@@ -200,4 +200,31 @@ public class WantedDetailActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Error archiving offer", e));
     }
+
+    private void openChat() {
+        checkIfChatExistsForWantAndUsers(wantId, currentUserId, wantUserId, (existingChatId) -> {
+            if (existingChatId != null) {
+                // Go to existing chat
+                db.collection("profiles").document(currentUserId).get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                String currentUserProfileUrl = documentSnapshot.getString("profilePictureURL");
+                                Intent intent = new Intent(WantedDetailActivity.this, ChatActivity.class);
+                                intent.putExtra("chatId", existingChatId);
+                                intent.putExtra("otherParticipantID", wantUserId);
+                                intent.putExtra("otherParticipantName", wantUserName);
+                                intent.putExtra("offerId", wantId);
+                                intent.putExtra("myProfilePicture", currentUserProfileUrl);
+                                startActivity(intent);
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("wanted", "Failed to retrieve current user profile", e);
+                        });
+            } else {
+                createNewChat("Want: " + title + " by " + wantUserName, currentUserId, wantUserId,
+                        wantUserName, wantId);
+            }
+        });
+    }
 }
