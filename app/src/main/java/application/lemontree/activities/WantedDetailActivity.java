@@ -189,4 +189,15 @@ public class WantedDetailActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> Log.e("WantedDetailActivity", "Error fetching want details", e));
     }
+
+    private void archiveOffer(String offerId) {
+        db.collection("wants").document(offerId)
+                .update("status", "archive")
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Offer archived", Toast.LENGTH_SHORT).show();
+                    archiveButton.setText("Offer Archived");
+                    archiveButton.setEnabled(false);
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error archiving offer", e));
+    }
 }
