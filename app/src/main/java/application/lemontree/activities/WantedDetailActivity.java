@@ -98,4 +98,95 @@ public class WantedDetailActivity extends AppCompatActivity {
                 .replace(R.id.nav_container, new NavBarFragment())
                 .commit();
     }
+
+    private void getWantDetails(String wantId) {
+        db.collection("wants").document(wantId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        title = documentSnapshot.getString("wantName");
+                        String category = documentSnapshot.getString("wantCategory");
+                        String description = documentSnapshot.getString("wantDescription");
+                        String imageUrl = documentSnapshot.getString("imageUrl");
+                        Timestamp createdAt = documentSnapshot.getTimestamp("createdAt");
+                        String wantAvailableDate = documentSnapshot.getString("wantAvailableDate");
+                        String createdById = documentSnapshot.getString("createdBy");
+                        String createdByUsername = documentSnapshot.getString("createdByUsername");
+                        String profilePictureUrl = documentSnapshot.getString("userProfileUrl");
+                        String status = documentSnapshot.getString("status");
+
+                        wantTitleTextView.setText(title);
+                        wantDescriptionTextView.setText(description);
+                        wantAvailableDateTextView.setText(wantAvailableDate);
+                        categoryTextView.setText(category);
+                        if (createdAt != null) {
+                            createdAtTextView.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(createdAt.toDate()));
+                        }
+
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
+                            Glide.with(this)
+                                    .load(imageUrl)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(wantImageView);
+                        }
+
+                        createdByUsernameTextView.setText("Wanted by " + createdByUsername);
+                        wantUserId = createdById;
+                        wantUserName = createdByUsername;
+
+                        if (currentUserId.equals(createdById)) {
+//                            chatButton.setText("Open my messages");
+//                            chatButton.setOnClickListener(v -> {
+//                                Intent intent = new Intent(WantedDetailActivity.this, MessageActivity.class);
+//                                startActivity(intent);
+//                            });
+
+                            ConstraintLayout offerCard = findViewById(R.id.offerCard);
+                            offerCard.setVisibility(View.GONE);
+
+                            TextView offerDetailTitle = findViewById(R.id.offerDetailTitle);
+                            offerDetailTitle.setText("My Wanted Item Detail");
+
+                            // Show archive button or archived status based on offer's status
+                            if (status != null && status.equals("archive")) {
+                                archiveButton.setVisibility(View.VISIBLE); // show the archive button
+                                archiveButton.setText("Offer Archived");
+                                // Disable the button
+                                archiveButton.setEnabled(false);
+                            } else {
+                                archiveButton.setVisibility(View.VISIBLE); // Show the archive button
+                            }
+
+                            // Handle archive button click event
+                            archiveButton.setOnClickListener(v -> {
+                                // Create an AlertDialog to confirm the action
+                                new AlertDialog.Builder(WantedDetailActivity.this)
+                                        .setTitle("Archive Offer")
+                                        .setMessage("Are you sure you want to archive this offer? It will no longer be visible to other users.")
+                                        .setPositiveButton("Yes", (dialog, which) -> {
+                                            // If the user confirms, archive the offer
+                                            archiveOffer(wantId);
+                                        })
+                                        .setNegativeButton("No", (dialog, which) -> {
+                                            // If the user cancels, just dismiss the dialog
+                                            dialog.dismiss();
+                                        })
+                                        .show();
+                            });
+
+                        } else {
+                            chatButton.setText("Chat to " + createdByUsername);
+                            chatButton.setOnClickListener(v -> openChat());
+                        }
+
+                        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                            wantUserURL = profilePictureUrl;
+                            Glide.with(WantedDetailActivity.this)
+                                    .load(profilePictureUrl)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                    .into(profileImageView);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("WantedDetailActivity", "Error fetching want details", e));
+    }
 }
