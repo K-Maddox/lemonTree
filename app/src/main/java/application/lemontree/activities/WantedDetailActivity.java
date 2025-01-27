@@ -37,6 +37,7 @@ import application.lemontree.R;
 import application.lemontree.fragments.NavBarFragment;
 
 public class WantedDetailActivity extends AppCompatActivity {
+
     private ImageView wantImageView;
     private TextView wantTitleTextView;
     private TextView wantDescriptionTextView;
