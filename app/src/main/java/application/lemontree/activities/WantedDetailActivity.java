@@ -227,4 +227,36 @@ public class WantedDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void checkIfChatExistsForWantAndUsers(String wantId, String userId1, String userId2, ChatCheckCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<String> participants = Arrays.asList(userId1, userId2);
+        Collections.sort(participants);
+
+        db.collection("chats")
+                .whereEqualTo("offerId", wantId)
+                .whereArrayContains("participants", userId1)  // Check for both users in the participants list
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            List<String> storedParticipants = (List<String>) document.get("participants");
+                            if (storedParticipants.contains(userId1) && storedParticipants.contains(userId2)) {
+                                Log.d("WantedDetailActivity", "Chat exists!");
+                                callback.onChatChecked(document.getId());
+                                return;
+                            }
+                        }
+                        Log.d("WantedDetailActivity", "No chat found.");
+                        callback.onChatChecked(null);
+                    } else {
+                        Log.d("WantedDetailActivity", "Error checking for existing chat or no chat found.");
+                        callback.onChatChecked(null);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("WantedDetailActivity", "Error checking chat", e);
+                    callback.onChatChecked(null);
+                });
+    }
 }
