@@ -263,4 +263,43 @@ public class WantedDetailActivity extends AppCompatActivity {
     private interface ChatCheckCallback {
         void onChatChecked(String chatId);
     }
+
+    private void createNewChat(String title, String currentUserId, String wantUserId, String wantUserName, String wantId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("profiles").document(currentUserId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String currentUserName = documentSnapshot.getString("username");
+                        String currentUserProfileUrl = documentSnapshot.getString("profilePictureURL");
+
+                        List<String> participants = Arrays.asList(currentUserId, wantUserId);
+
+                        Map<String, Object> chatData = new HashMap<>();
+                        chatData.put("title", title);
+                        chatData.put("lastMessage", "");
+                        chatData.put("lastMessageTimestamp", FieldValue.serverTimestamp());
+                        chatData.put("participants", participants);
+                        chatData.put("participantsNames", Arrays.asList(currentUserName, wantUserName));
+                        chatData.put("profilePictureURLs", Arrays.asList(currentUserProfileUrl, wantUserURL));
+                        chatData.put("offerId", wantId);
+
+                        Log.d("WantedDetailActivity", "Creating chat with wantId: " + wantId);
+
+                        db.collection("chats").add(chatData)
+                                .addOnSuccessListener(documentReference -> {
+                                    String newChatId = documentReference.getId();
+                                    Intent intent = new Intent(WantedDetailActivity.this, ChatActivity.class);
+                                    intent.putExtra("chatId", newChatId);
+                                    intent.putExtra("offerId", wantId);
+                                    intent.putExtra("otherParticipantID", wantUserId);
+                                    intent.putExtra("otherParticipantName", wantUserName);
+                                    intent.putExtra("myProfilePicture", currentUserProfileUrl);
+                                    Log.d("WantedDetailActivity", "Starting ChatActivity with offerId: " + wantId);
+                                    startActivity(intent);
+                                })
+                                .addOnFailureListener(e -> Log.e("WantedDetailActivity", "Error creating new chat", e));
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("WantedDetailActivity", "Failed to retrieve current user profile", e));
+    }
 }
