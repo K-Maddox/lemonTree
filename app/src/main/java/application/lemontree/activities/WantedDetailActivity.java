@@ -259,4 +259,8 @@ public class WantedDetailActivity extends AppCompatActivity {
                     callback.onChatChecked(null);
                 });
     }
+
+    private interface ChatCheckCallback {
+        void onChatChecked(String chatId);
+    }
 }
