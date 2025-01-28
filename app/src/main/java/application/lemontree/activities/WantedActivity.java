@@ -29,7 +29,7 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.ArrayList;
 
 import application.lemontree.R;
-import application.lemontree.adaptors.WantedAdapter;
+import application.lemontree.adapter.WantedAdapter;
 import application.lemontree.fragments.NavBarFragment;
 import application.lemontree.helpers.FilterDialogFragment;
 import application.lemontree.helpers.FilterHelper;
