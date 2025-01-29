@@ -17,4 +17,16 @@ import java.util.Objects;
 import application.lemontree.R;
 
 public class FilterDialogFragment {
+
+    // Create interface for the filter listener
+    public interface OnFilterAppliedListener {
+        void onFilterApplied(int radius);
+    }
+
+    private OnFilterAppliedListener listener;
+
+    // Method to set the listener from outside
+    public void setOnFilterAppliedListener(OnFilterAppliedListener listener) {
+        this.listener = listener;
+    }
 }
