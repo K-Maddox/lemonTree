@@ -14,4 +14,11 @@ public class PermissionHelper {
         this.activity = activity;
     }
 
+    // check and ask for location
+    public void checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+    }
 }
