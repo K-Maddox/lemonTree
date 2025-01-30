@@ -48,6 +48,30 @@ public class FilterDialogFragment {
         // Retrieve the radius from arguments (default to 5 if not found)
         int currentRadius = getArguments() != null ? getArguments().getInt("radius", 5) : 5;
 
+        // Set the radius text in the dialog
+        EditText radiusText = view.findViewById(R.id.editRadius);
+        radiusText.setText(String.valueOf(currentRadius));
+
+        builder.setTitle("Filter")
+                .setView(view)
+                .setPositiveButton("Apply", (dialogInterface, i) -> {
+                    int radius;
+                    try {
+                        radius = Integer.parseInt(String.valueOf(radiusText.getText()));
+                        if (radius < 0) {
+                            radius = -radius;
+                        }
+                    } catch (NumberFormatException ignored) {
+                        radius = 5;
+                    }
+                    if (listener != null) {
+                        listener.onFilterApplied(radius);
+                    }
+                })
+                .setNegativeButton("Cancel", ((dialogInterface, i) -> {
+                    Objects.requireNonNull(this.getDialog()).cancel();
+                }));
+
 
         return builder.create();
     }
