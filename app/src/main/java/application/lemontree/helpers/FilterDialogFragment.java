@@ -29,4 +29,26 @@ public class FilterDialogFragment {
     public void setOnFilterAppliedListener(OnFilterAppliedListener listener) {
         this.listener = listener;
     }
+
+    @SuppressLint({"InflateParams", "ResourceType", "DialogFragmentCallbacksDetector"})
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        setCancelable(true);
+        final View view = inflater.inflate(R.layout.filters_layout, null);
+
+//        // set text to previous values
+//        if (getContext() instanceof OfferActivity) {
+//            EditText radiusText = view.findViewById(R.id.editRadius);
+//            radiusText.setText(String.valueOf(((OfferActivity) getContext()).radius));
+//        }
+
+        // Retrieve the radius from arguments (default to 5 if not found)
+        int currentRadius = getArguments() != null ? getArguments().getInt("radius", 5) : 5;
+
+
+        return builder.create();
+    }
 }
