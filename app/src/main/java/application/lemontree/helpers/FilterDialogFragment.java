@@ -16,9 +16,9 @@ import java.util.Objects;
 
 import application.lemontree.R;
 
-public class FilterDialogFragment {
+public class FilterDialogFragment extends DialogFragment {
 
-    // Create interface for the filter listener
+    // Define an interface for the filter listener
     public interface OnFilterAppliedListener {
         void onFilterApplied(int radius);
     }
@@ -29,6 +29,7 @@ public class FilterDialogFragment {
     public void setOnFilterAppliedListener(OnFilterAppliedListener listener) {
         this.listener = listener;
     }
+
 
     @SuppressLint({"InflateParams", "ResourceType", "DialogFragmentCallbacksDetector"})
     @NonNull
