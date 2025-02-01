@@ -20,4 +20,15 @@ import java.util.List;
 import application.lemontree.R;
 
 public class MessageAdapter {
+    private static final String TAG = "inMessageAdapter";
+
+    private List<QueryDocumentSnapshot> messageList;
+    private OnItemClickListener listener;
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    public MessageAdapter(List<QueryDocumentSnapshot> messageList, OnItemClickListener listener) {
+        this.messageList = messageList;
+        this.listener = listener;
+    }
 }
