@@ -90,4 +90,10 @@ public class MessageAdapter {
         // click to chat detail
         holder.itemView.setOnClickListener(v -> listener.onItemClick(chat));
     }
+
+    @Override
+    public int getItemCount() {
+        Log.d(TAG, "Item count: " + messageList.size());
+        return messageList.size();
+    }
 }
