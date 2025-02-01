@@ -31,4 +31,13 @@ public class MessageAdapter {
         this.messageList = messageList;
         this.listener = listener;
     }
+
+    @NonNull
+    @Override
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // Inflate item_message layout
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_message, parent, false);
+        return new MessageViewHolder(view);
+    }
 }
