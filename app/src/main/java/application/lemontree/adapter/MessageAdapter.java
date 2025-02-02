@@ -19,7 +19,7 @@ import java.util.List;
 
 import application.lemontree.R;
 
-public class MessageAdapter {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
     private static final String TAG = "inMessageAdapter";
 
     private List<QueryDocumentSnapshot> messageList;
