@@ -96,4 +96,8 @@ public class MessageAdapter {
         Log.d(TAG, "Item count: " + messageList.size());
         return messageList.size();
     }
+
+    public interface OnItemClickListener {
+        void onItemClick(QueryDocumentSnapshot message);
+    }
 }
