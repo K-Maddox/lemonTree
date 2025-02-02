@@ -20,5 +20,14 @@ import java.util.List;
 import application.lemontree.R;
 import application.lemontree.models.ChatMessage;
 
-public class ChatMessageAdapter {
+public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.ChatMessageViewHolder> {
+
+    private static final String TAG = "inChatMessageAdapter";
+    private List<ChatMessage> chatMessageList;
+    private String currentUserId;
+
+    public ChatMessageAdapter(List<ChatMessage> chatMessageList, String currentUserId) {
+        this.chatMessageList = chatMessageList;
+        this.currentUserId = currentUserId;
+    }
 }
