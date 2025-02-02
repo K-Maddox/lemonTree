@@ -100,4 +100,18 @@ public class MessageAdapter {
     public interface OnItemClickListener {
         void onItemClick(QueryDocumentSnapshot message);
     }
+
+    // ViewHolder class to hold the views for each message item
+    public static class MessageViewHolder extends RecyclerView.ViewHolder {
+        TextView itemNameTextView, fromUserTextView, lastMessageTextView;
+        ImageView imageView;
+
+        public MessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            itemNameTextView = itemView.findViewById(R.id.text_mes_itemname);
+            fromUserTextView = itemView.findViewById(R.id.text_mes_username);
+            lastMessageTextView = itemView.findViewById(R.id.text_mes_lastMessage);
+            imageView = itemView.findViewById(R.id.imageView);
+        }
+    }
 }
