@@ -47,6 +47,26 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
         loadProfileImage(chatMessage.senderPictureURL, holder.profileImageView);
 
+        // check message sender and adjust bubble layout
+        if (chatMessage.getSenderId().equals(currentUserId)) {
+            // current user message show on right
+            holder.messageTextView.setBackgroundResource(R.drawable.my_bubble);
+            holder.messageTextView.setTextColor(Color.WHITE);
+            holder.chatmessageContainer.setGravity(Gravity.END);
 
+            // put avatar at right, bubble at left
+            holder.chatmessageContainer.removeAllViews();
+            holder.chatmessageContainer.addView(holder.messageTextView);
+            holder.chatmessageContainer.addView(holder.profileImageView);
+        } else {
+            // the user chat with show on left
+            holder.messageTextView.setBackgroundResource(R.drawable.left_bubble);
+            holder.messageTextView.setTextColor(Color.BLACK);
+            holder.chatmessageContainer.setGravity(Gravity.START);
+
+            holder.chatmessageContainer.removeAllViews();
+            holder.chatmessageContainer.addView(holder.profileImageView);
+            holder.chatmessageContainer.addView(holder.messageTextView);
+        }
     }
 }
