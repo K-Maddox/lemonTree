@@ -69,4 +69,22 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             holder.chatmessageContainer.addView(holder.messageTextView);
         }
     }
+
+    @Override
+    public int getItemCount() {
+        return chatMessageList.size();
+    }
+
+    public static class ChatMessageViewHolder extends RecyclerView.ViewHolder {
+        TextView messageTextView;
+        LinearLayout chatmessageContainer;
+        ImageView profileImageView;
+
+        public ChatMessageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            messageTextView = itemView.findViewById(R.id.textChatMessage);
+            chatmessageContainer = itemView.findViewById(R.id.chatmessageContainer);
+            profileImageView = itemView.findViewById(R.id.imageViewProfile);
+        }
+    }
 }
