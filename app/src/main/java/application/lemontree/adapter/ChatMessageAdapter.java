@@ -30,4 +30,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         this.chatMessageList = chatMessageList;
         this.currentUserId = currentUserId;
     }
+
+    @NonNull
+    @Override
+    public ChatMessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_chat_message, parent, false);
+        return new ChatMessageViewHolder(view);
+    }
 }
