@@ -38,4 +38,15 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
                 .inflate(R.layout.item_chat_message, parent, false);
         return new ChatMessageViewHolder(view);
     }
+
+    @Override
+    public void onBindViewHolder(@NonNull ChatMessageViewHolder holder, int position) {
+        ChatMessage chatMessage = chatMessageList.get(position);
+        // set chatmessage text
+        holder.messageTextView.setText(chatMessage.getMessageText());
+
+        loadProfileImage(chatMessage.senderPictureURL, holder.profileImageView);
+
+
+    }
 }
