@@ -87,4 +87,13 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             profileImageView = itemView.findViewById(R.id.imageViewProfile);
         }
     }
+
+    private void loadProfileImage(String profilePictureURL, ImageView imageView) {
+        Glide.with(imageView.getContext())
+                .load(profilePictureURL)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_default_avatar)
+                .error(R.drawable.ic_default_avatar)
+                .into(imageView);
+    }
 }
