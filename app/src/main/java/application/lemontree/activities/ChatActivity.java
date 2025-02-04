@@ -23,7 +23,7 @@ import application.lemontree.R;
 import application.lemontree.adapters.ChatMessageAdapter;
 import application.lemontree.models.ChatMessage;
 
-public class ChatActivity {
+public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "inChatActivity";
     private RecyclerView recyclerView;
     private ChatMessageAdapter chatMessageAdapter;
