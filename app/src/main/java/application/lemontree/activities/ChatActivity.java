@@ -24,4 +24,19 @@ import application.lemontree.adapters.ChatMessageAdapter;
 import application.lemontree.models.ChatMessage;
 
 public class ChatActivity {
+    private static final String TAG = "inChatActivity";
+    private RecyclerView recyclerView;
+    private ChatMessageAdapter chatMessageAdapter;
+    private List<ChatMessage> chatMessageList;
+
+    private String chatId;
+    private String currentUserId;
+    private String otherUserId;
+    private String myProfilePicture;
+    private String otherProfilePicture;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+
+    private EditText editTextMessage;
+    private Button buttonSend;
 }
