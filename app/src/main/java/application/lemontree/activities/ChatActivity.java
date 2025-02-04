@@ -39,4 +39,30 @@ public class ChatActivity {
 
     private EditText editTextMessage;
     private Button buttonSend;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
+
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        chatId = getIntent().getStringExtra("chatId");
+        String offerId = getIntent().getStringExtra("offerId");
+        if (offerId == null) {
+            Log.e(TAG, "offerId is null");
+            finish();
+            return;
+        }
+        Log.d(TAG, "Received offerId: " + offerId);
+        currentUserId = auth.getCurrentUser().getUid();
+        otherUserId = getIntent().getStringExtra("otherParticipantID");
+        myProfilePicture = getIntent().getStringExtra("myProfilePicture");
+        otherProfilePicture = getIntent().getStringExtra("otherProfilePicture");
+
+        // init RecyclerView
+        recyclerView = findViewById(R.id.recyclerViewChatMessages);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    }
 }
