@@ -64,5 +64,21 @@ public class ChatActivity {
         recyclerView = findViewById(R.id.recyclerViewChatMessages);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // init chat message and adapter
+        chatMessageList = new ArrayList<>();
+        chatMessageAdapter = new ChatMessageAdapter(chatMessageList, currentUserId);
+        recyclerView.setAdapter(chatMessageAdapter);
+
+        // init EditText input box and Button
+        editTextMessage = findViewById(R.id.edittext_chat_chatmessage);
+        buttonSend = findViewById(R.id.btn_chat_send);
+
+        // show offer information associated with this chat
+        loadOfferDetails(offerId);
+        // load chat history
+        loadChatMessages();
+
+        // send chat message click listener
+        buttonSend.setOnClickListener(v -> sendMessage(offerId));
     }
 }
