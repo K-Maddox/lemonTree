@@ -145,6 +145,22 @@ public class ChatActivity extends AppCompatActivity {
                 myProfilePicture
         );
 
+        chatMessageList.add(chatMessage);
+        chatMessageAdapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(chatMessageList.size() - 1);
 
+        // store chat message in Firestore
+        DocumentReference chatRef = db.collection("chats").document(chatId);
+        chatRef.collection("chatmessages")
+                .add(chatMessage)
+                .addOnSuccessListener(documentReference -> {
+                    // clear input box after send success
+                    editTextMessage.setText("");
+                    recyclerView.scrollToPosition(chatMessageList.size() - 1);
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error sending message", e);
+                });
     }
 }
