@@ -127,4 +127,24 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void sendMessage(String offerId) {
+        // get what user type in
+        String messageText = editTextMessage.getText().toString().trim();
+        if (messageText.isEmpty()) {
+            return;
+        }
+
+        // create a chatmessage object
+        ChatMessage chatMessage = new ChatMessage(
+                currentUserId,
+                otherUserId,
+                messageText,
+                Timestamp.now(),
+                false,
+                myProfilePicture
+        );
+
+
+    }
 }
