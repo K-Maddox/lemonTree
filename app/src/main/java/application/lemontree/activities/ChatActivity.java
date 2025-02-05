@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.lemontree.R;
-import application.lemontree.adapters.ChatMessageAdapter;
+import application.lemontree.adapter.ChatMessageAdapter;
 import application.lemontree.models.ChatMessage;
 
 public class ChatActivity extends AppCompatActivity {
@@ -80,5 +80,13 @@ public class ChatActivity extends AppCompatActivity {
 
         // send chat message click listener
         buttonSend.setOnClickListener(v -> sendMessage(offerId));
+    }
+
+    private void loadOfferDetails(String offerId) {
+        if (offerId == null || offerId.isEmpty()) {
+            Log.e(TAG, "offerId is null or empty");
+            return;
+        }
+
     }
 }
