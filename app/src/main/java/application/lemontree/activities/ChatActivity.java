@@ -112,6 +112,19 @@ public class ChatActivity extends AppCompatActivity {
                         return;
                     }
 
-
+                    if (value != null && !value.isEmpty()) {
+                        chatMessageList.clear();  // clear all chat messages to load new
+                        for (DocumentSnapshot doc : value.getDocuments()) {
+                            ChatMessage message = doc.toObject(ChatMessage.class);
+                            if (!chatMessageList.contains(message)) {   // if this text is sent by current user, and already show, don't add again
+                                chatMessageList.add(message);
+                            }
+                        }
+                        Log.d(TAG, "Chat messages loaded: " + chatMessageList.size());
+                        chatMessageAdapter.notifyDataSetChanged();  // notify adapter to update UI
+                        // roll to the newest chat message
+                        recyclerView.scrollToPosition(chatMessageList.size() - 1);
+                    }
+                });
     }
 }
