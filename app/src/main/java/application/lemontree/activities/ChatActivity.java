@@ -156,6 +156,18 @@ public class ChatActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentReference -> {
                     // clear input box after send success
                     editTextMessage.setText("");
+
+                    // update chats doc lastMessage and timestamp
+                    chatRef.update(
+                            "lastMessage", messageText,
+                            "lastMessageTimestamp", Timestamp.now(),
+                            "offerId", offerId
+                    ).addOnSuccessListener(aVoid -> {
+                        Log.d(TAG, "Last message and timestamp updated successfully");
+                    }).addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to update last message and timestamp", e);
+                    });
+
                     recyclerView.scrollToPosition(chatMessageList.size() - 1);
 
                 })
