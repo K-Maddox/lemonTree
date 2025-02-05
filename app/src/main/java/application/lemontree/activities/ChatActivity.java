@@ -100,4 +100,18 @@ public class ChatActivity extends AppCompatActivity {
                     Log.e(TAG, "Error loading offer details", e);
                 });
     }
+
+    // load all chat messages from Firestore of this chat
+    private void loadChatMessages() {
+        // monitor collection 'chatmessages' by addSnapshotListener and update automatically
+        db.collection("chats").document(chatId).collection("chatmessages")
+                .orderBy("timestamp", Query.Direction.ASCENDING)   // load messages by time order
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.w(TAG, "Listen failed.", error);
+                        return;
+                    }
+
+
+    }
 }
