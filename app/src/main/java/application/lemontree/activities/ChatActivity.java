@@ -88,5 +88,16 @@ public class ChatActivity extends AppCompatActivity {
             return;
         }
 
+        // load offer details associated with this chat
+        db.collection("offers").document(offerId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String offerTitle = documentSnapshot.getString("title");
+                        setTitle("Chat - " + offerTitle);
+                    }
+                }).addOnFailureListener(e -> {
+                    Log.e(TAG, "Error loading offer details", e);
+                });
     }
 }
