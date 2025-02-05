@@ -24,6 +24,7 @@ import application.lemontree.adapter.ChatMessageAdapter;
 import application.lemontree.models.ChatMessage;
 
 public class ChatActivity extends AppCompatActivity {
+
     private static final String TAG = "inChatActivity";
     private RecyclerView recyclerView;
     private ChatMessageAdapter chatMessageAdapter;
