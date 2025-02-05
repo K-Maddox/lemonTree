@@ -175,4 +175,5 @@ public class ChatActivity extends AppCompatActivity {
                     Log.e(TAG, "Error sending message", e);
                 });
     }
+
 }
