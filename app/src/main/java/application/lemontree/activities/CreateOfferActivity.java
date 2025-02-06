@@ -55,5 +55,27 @@ import application.lemontree.R;
 import application.lemontree.helpers.FieldValidationPair;
 import application.lemontree.models.Offer;
 
-public class CreateOfferActivity {
+public class CreateOfferActivity extends AppCompatActivity {
+    public static final int CAMERA_PERM_CODE = 101;
+    private static final int REQUEST_IMAGE_CAPTURE = 102;
+    private static final int REQUEST_GALLERY_CODE = 103;
+    private static final int REQUEST_LOCATION_PICK = 104;
+
+    String currentPhotoPath;
+    private Uri imageUri;
+
+    String[] categoryList = {"Food", "Herbs", "Seeds", "Flowers", "Garden"};
+    AutoCompleteTextView category;
+    ArrayAdapter<String> categoryItems;
+    private ImageView offerImageView;
+    private Button cameraButton, galleryButton;
+    private EditText offerNameEditText, offerDescriptionEditText, offerAvailableDateEditText, offerLocationEditText;
+    private TextInputLayout offerNameInputLayout, categoryDropDown, offerDescriptionInputLayout, offerAvailableDateInputLayout, offerLocationInputLayout;
+    private Button availDateButton, locationButton, submitButton;
+    private List<FieldValidationPair> fieldValidationPairs = new ArrayList<>();
+    private GeoPoint selectedGeoPoint;
+
+    private boolean isValid = true;  // Single validation flag
+    private boolean isImageValid = true;
+    private boolean isImageSizeValid = true;
 }
