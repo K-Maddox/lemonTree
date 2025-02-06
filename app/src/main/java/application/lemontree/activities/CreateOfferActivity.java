@@ -78,4 +78,19 @@ public class CreateOfferActivity extends AppCompatActivity {
     private boolean isValid = true;  // Single validation flag
     private boolean isImageValid = true;
     private boolean isImageSizeValid = true;
+
+    private void setOnFocusListeners() {
+        for (FieldValidationPair pair : fieldValidationPairs) {
+            final EditText editText = pair.editText;
+            final TextInputLayout inputLayout = pair.inputLayout;
+
+            editText.setOnFocusChangeListener((view, hasFocus) -> {
+                if (!hasFocus) {
+                    if (!validateField(editText, inputLayout, "Required*")) {
+                        isValid = false;  // Mark form as invalid if this field is invalid
+                    }
+                }
+            });
+        }
+    }
 }
