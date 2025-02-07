@@ -79,6 +79,38 @@ public class CreateOfferActivity extends AppCompatActivity {
     private boolean isImageValid = true;
     private boolean isImageSizeValid = true;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_offer);
+
+        offerImageView = findViewById(R.id.offerImageView);
+        cameraButton = findViewById(R.id.cameraButton);
+        galleryButton = findViewById(R.id.galleryButton);
+
+        offerNameInputLayout = findViewById(R.id.offerNameInputLayout);
+        offerNameEditText = findViewById(R.id.offerNameEditText);
+
+        categoryDropDown = findViewById(R.id.categoryDropDown);
+        category = findViewById(R.id.category);
+
+        offerDescriptionEditText = findViewById(R.id.offerDescriptionEditText);
+        offerDescriptionInputLayout = findViewById(R.id.offerDescriptionInputLayout);
+
+        offerAvailableDateEditText = findViewById(R.id.offerAvailableDateEditText);
+        offerAvailableDateInputLayout = findViewById(R.id.offerAvailableDateInputLayout);
+
+        offerLocationEditText = findViewById(R.id.offerLocationEditText);
+        offerLocationInputLayout = findViewById(R.id.offerLocationInputLayout);
+
+        availDateButton = findViewById(R.id.availDateButton);
+        locationButton = findViewById(R.id.locationButton);
+        submitButton = findViewById(R.id.submitOfferButton);
+
+
+
+    }
+
     private void setOnFocusListeners() {
         for (FieldValidationPair pair : fieldValidationPairs) {
             final EditText editText = pair.editText;
