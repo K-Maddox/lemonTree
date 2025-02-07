@@ -253,4 +253,9 @@ public class CreateOfferActivity extends AppCompatActivity {
         offerDescriptionEditText.clearFocus();
         category.clearFocus();
     }
+
+    // Helper method to check if the EditText or AutoCompleteTextView is empty
+    private boolean isEmptyText(EditText editText) {
+        return editText.getText().toString().trim().isEmpty();
+    }
 }
