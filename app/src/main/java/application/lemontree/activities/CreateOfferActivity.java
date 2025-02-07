@@ -107,6 +107,40 @@ public class CreateOfferActivity extends AppCompatActivity {
         locationButton = findViewById(R.id.locationButton);
         submitButton = findViewById(R.id.submitOfferButton);
 
+        // Add field pairs to the list
+        fieldValidationPairs.add(new FieldValidationPair(offerNameEditText, offerNameInputLayout));
+        fieldValidationPairs.add(new FieldValidationPair(category, categoryDropDown));
+        fieldValidationPairs.add(new FieldValidationPair(offerDescriptionEditText, offerDescriptionInputLayout));
+        fieldValidationPairs.add(new FieldValidationPair(offerAvailableDateEditText, offerAvailableDateInputLayout));
+        fieldValidationPairs.add(new FieldValidationPair(offerLocationEditText, offerLocationInputLayout));
+
+        // Set focus change listeners to validate fields dynamically
+        setOnFocusListeners();
+
+        // category dropdown list
+        categoryItems = new ArrayAdapter<String>(this, R.layout.category_item, categoryList);
+        category.setAdapter(categoryItems);
+        category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+            }
+        });
+
+        // Set up DatePicker
+        availDateButton.setOnClickListener(v -> {
+            // Clear focus from other fields
+            clearFocusableEditTextFocus();
+            // Trigger the date picker
+            showDatePicker();
+        });
+        offerAvailableDateEditText.setOnClickListener(v -> {
+            // Clear focus from other fields
+            clearFocusableEditTextFocus();
+            // Trigger the date picker
+            showDatePicker();
+        });
+
 
 
     }
