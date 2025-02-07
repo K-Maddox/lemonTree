@@ -141,7 +141,82 @@ public class CreateOfferActivity extends AppCompatActivity {
             showDatePicker();
         });
 
+        // Capture Image
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                askCameraPermission();
+            }
+        });
 
+        galleryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(gallery, REQUEST_GALLERY_CODE);
+            }
+        });
+
+        // Location button opens this activity again
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Clear focus from other fields
+                clearFocusableEditTextFocus();
+                // Open the same activity on location button click
+                Intent locationIntent = new Intent(CreateOfferActivity.this, LocationSelectActivity.class);
+                startActivityForResult(locationIntent, REQUEST_LOCATION_PICK);
+            }
+        });
+
+        // Set onClickListener for offerLocationEditText to behave like the Select Location button
+        offerLocationEditText.setOnClickListener(v -> {
+            // Clear focus from other fields
+            clearFocusableEditTextFocus();
+            Intent locationIntent = new Intent(CreateOfferActivity.this, LocationSelectActivity.class);
+            startActivityForResult(locationIntent, REQUEST_LOCATION_PICK);
+        });
+
+        // Handle form submission
+        submitButton.setOnClickListener(v -> {
+            // Validate all fields again at submission time
+            isValid = true;  // Reset the flag to true
+            isImageValid = true;
+            isImageSizeValid = true;
+            for (FieldValidationPair pair : fieldValidationPairs) {
+                if (!validateField(pair.editText, pair.inputLayout, "Required*")) {
+                    isValid = false;
+                }
+            }
+            // Validate Image
+            Drawable defaultImage = getResources().getDrawable(R.drawable.empty_image);
+            if (offerImageView.getDrawable().getConstantState().equals(defaultImage.getConstantState())) {
+                isImageValid = false;
+            } else {
+                if (imageUri != null) {
+                    isImageSizeValid = checkFileSize(imageUri);
+                }
+            }
+
+            // Proceed if all validations are successful
+            if (isValid && isImageValid && isImageSizeValid) {
+                // Disable the button to prevent multiple clicks
+                submitButton.setEnabled(false);
+                submitButton.setText("Posting...");
+                // All required fields are filled, proceed with saving or submitting the offer
+                uploadOfferToFirebase();
+            } else {
+                if (!isValid) {
+                    Toast.makeText(CreateOfferActivity.this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
+                }
+                if (!isImageValid) {
+                    Toast.makeText(CreateOfferActivity.this, "Please select an image", Toast.LENGTH_SHORT).show();
+                }
+                if (!isImageSizeValid) {
+                    Toast.makeText(CreateOfferActivity.this, "Image size not accepted, max image size is 20MB", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
