@@ -287,4 +287,32 @@ public class CreateOfferActivity extends AppCompatActivity {
             }
         }
     }
+
+    // Capture photo
+    private void dispatchTakePictureIntent() {
+        // Get location before capturing the photo
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        // Create the File where the photo should go
+        File photoFile = null;
+        try {
+            photoFile = createImageFile();
+        } catch (IOException ex) {
+            // Handle error
+            ex.printStackTrace();
+        }
+        // Continue only if the File was successfully created
+        if (photoFile != null) {
+            Uri photoURI = FileProvider.getUriForFile(this,
+                    "comp5216.sydney.edu.au.lemontreefirebase.activities.fileprovider",
+                    photoFile);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+            // Check the size of the captured image
+//            checkFileSize(photoFile);
+        }
+//        }
+    }
 }
