@@ -246,4 +246,11 @@ public class CreateOfferActivity extends AppCompatActivity {
             return true;  // Field is valid
         }
     }
+
+    // Helper method to clear focus from all focusable EditText fields
+    private void clearFocusableEditTextFocus() {
+        offerNameEditText.clearFocus();
+        offerDescriptionEditText.clearFocus();
+        category.clearFocus();
+    }
 }
