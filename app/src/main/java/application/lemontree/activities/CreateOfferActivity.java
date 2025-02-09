@@ -366,6 +366,16 @@ public class CreateOfferActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
+
+        // Generate a new offer ID
+        DocumentReference offerRef = db.collection("offers").document();
+        String offerId = offerRef.getId();
+
+        // Use offerId in storage path
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        StorageReference imageRef = storageRef.child("OfferPictures/" + offerId + "/" + timeStamp + "." + getFileExt(imageUri));
+
+        UploadTask uploadTask = imageRef.putFile(imageUri);
     }
 
     private String getFileExt(Uri uri) {
