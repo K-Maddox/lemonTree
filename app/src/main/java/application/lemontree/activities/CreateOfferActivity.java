@@ -428,6 +428,27 @@ public class CreateOfferActivity extends AppCompatActivity {
                     offer.setCreatedByUsername(username);
                     offer.setCreatedAt(com.google.firebase.Timestamp.now());
                     offer.setStatus("active");
+
+                    // Upload to Firestore using the same offerId
+                    db.collection("offers").document(offerId)
+                            .set(offer)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(CreateOfferActivity.this, "Offer uploaded successfully", Toast.LENGTH_SHORT).show();
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                submitButton.setEnabled(true);
+                                submitButton.setText("Post Offer");
+                                Toast.makeText(CreateOfferActivity.this, "Error uploading offer", Toast.LENGTH_SHORT).show();
+                                Log.e("CreateOfferActivity", "Error uploading offer", e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    submitButton.setEnabled(true);
+                    submitButton.setText("Post Offer");
+                    Toast.makeText(CreateOfferActivity.this, "Failed to get user profile", Toast.LENGTH_SHORT).show();
+                    Log.e("CreateOfferActivity", "Failed to get user profile", e);
+                });
     }
 
     private String getFileExt(Uri uri) {
