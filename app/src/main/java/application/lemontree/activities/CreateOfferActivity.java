@@ -352,6 +352,13 @@ public class CreateOfferActivity extends AppCompatActivity {
         }
     }
 
+    private String getFileExt(Uri uri) {
+        if (uri == null) return null;
+        ContentResolver c = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(uri));
+    }
+
     // Capture photo
     private void dispatchTakePictureIntent() {
         // Get location before capturing the photo
