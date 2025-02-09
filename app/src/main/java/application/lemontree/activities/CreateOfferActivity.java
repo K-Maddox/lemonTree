@@ -288,6 +288,28 @@ public class CreateOfferActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_LOCATION_PICK && resultCode == Activity.RESULT_OK && data != null) {
+            // Get the selected location name and coordinates from the intent
+            String selectedLocationName = data.getStringExtra("selected_location_name");
+            double latitude = data.getDoubleExtra("selected_latitude", 0.0);
+            double longitude = data.getDoubleExtra("selected_longitude", 0.0);
+
+            if (selectedLocationName != null) {
+                // Update the offerLocationEditText with the selected location name
+                offerLocationEditText.setText(selectedLocationName);
+
+                // Save the latitude and longitude for later use when submitting the form
+                selectedGeoPoint = new GeoPoint(latitude, longitude);
+
+                // Clear the helper text for the location field after a valid selection
+                offerLocationInputLayout.setHelperText(null);
+            }
+        }
+    }
+
     // Capture photo
     private void dispatchTakePictureIntent() {
         // Get location before capturing the photo
