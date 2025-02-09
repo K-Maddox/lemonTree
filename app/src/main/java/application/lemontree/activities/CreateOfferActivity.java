@@ -352,6 +352,22 @@ public class CreateOfferActivity extends AppCompatActivity {
         }
     }
 
+    private void uploadImageAndOffer(String offerName, String offerCategory, String offerDescription,
+                                     String offerAvailableDate, String offerPickUpLocation, GeoPoint offerGeoPoint) {
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            submitButton.setText("Post Offer");
+            Log.d("CreateOfferActivity", "User is not authenticated");
+            return;
+        }
+        Log.d("CreateOfferActivity", "User is authenticated: " + user.getUid());
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+    }
+
     private String getFileExt(Uri uri) {
         if (uri == null) return null;
         ContentResolver c = getContentResolver();
