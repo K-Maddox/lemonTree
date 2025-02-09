@@ -394,6 +394,22 @@ public class CreateOfferActivity extends AppCompatActivity {
         });
     }
 
+    private void uploadOfferData(String offerId, String offerName, String offerCategory, String offerDescription,
+                                 String offerAvailableDate, String offerPickUpLocation, GeoPoint offerGeoPoint, String imageUrl) {
+        // Get current user's ID
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            submitButton.setText("Post Offer");
+            return;
+        }
+        String userId = user.getUid();
+
+        // Get user's profile URL and username
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    }
+
     private String getFileExt(Uri uri) {
         if (uri == null) return null;
         ContentResolver c = getContentResolver();
