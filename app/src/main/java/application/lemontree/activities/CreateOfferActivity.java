@@ -408,6 +408,26 @@ public class CreateOfferActivity extends AppCompatActivity {
         // Get user's profile URL and username
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        db.collection("profiles").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    String userProfileUrl = documentSnapshot.getString("profilePictureURL");
+                    String username = documentSnapshot.getString("username");
+
+                    // Create an Offer object
+                    Offer offer = new Offer();
+                    offer.setOfferId(offerId); // Set the offerId
+                    offer.setOfferName(offerName);
+                    offer.setOfferCategory(offerCategory);
+                    offer.setOfferDescription(offerDescription);
+                    offer.setOfferAvailableDate(offerAvailableDate);
+                    offer.setOfferPickUpLocation(offerPickUpLocation);
+                    offer.setLocation(offerGeoPoint);
+                    offer.setImageUrl(imageUrl);
+                    offer.setCreatedBy(userId);
+                    offer.setUserProfileUrl(userProfileUrl);
+                    offer.setCreatedByUsername(username);
+                    offer.setCreatedAt(com.google.firebase.Timestamp.now());
+                    offer.setStatus("active");
     }
 
     private String getFileExt(Uri uri) {
