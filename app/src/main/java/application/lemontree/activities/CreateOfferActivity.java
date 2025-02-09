@@ -308,6 +308,25 @@ public class CreateOfferActivity extends AppCompatActivity {
                 offerLocationInputLayout.setHelperText(null);
             }
         }
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            File f = new File(currentPhotoPath);
+            imageUri = Uri.fromFile(f);
+            offerImageView.setImageURI(imageUri);
+            Log.d("tag", "Absolute Url for Image is " + imageUri);
+
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(imageUri);
+            this.sendBroadcast(mediaScanIntent);
+        }
+
+        if (requestCode == REQUEST_GALLERY_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                imageUri = data.getData();
+                offerImageView.setImageURI(imageUri);
+                Log.d("tag", "onActivityResult: Gallery Image Uri:  " + imageUri);
+            }
+        }
     }
 
     // Capture photo
