@@ -329,6 +329,29 @@ public class CreateOfferActivity extends AppCompatActivity {
         }
     }
 
+    private void uploadOfferToFirebase() {
+        // Collect data from UI elements
+        String offerName = offerNameEditText.getText().toString().trim();
+        String offerCategory = category.getText().toString().trim();
+        String offerDescription = offerDescriptionEditText.getText().toString().trim();
+        String offerAvailableDate = offerAvailableDateEditText.getText().toString().trim();
+        String offerPickUpLocation = offerLocationEditText.getText().toString().trim();
+
+        if (imageUri != null) {
+            if (selectedGeoPoint != null) {
+                uploadImageAndOffer(offerName, offerCategory, offerDescription, offerAvailableDate, offerPickUpLocation, selectedGeoPoint);
+            } else {
+                submitButton.setEnabled(true);
+                submitButton.setText("Post Offer");
+                Toast.makeText(this, "Please select a valid location", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            submitButton.setEnabled(true);
+            submitButton.setText("Post Offer");
+            Toast.makeText(this, "Please select a valid image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // Capture photo
     private void dispatchTakePictureIntent() {
         // Get location before capturing the photo
