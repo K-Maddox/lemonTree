@@ -376,6 +376,22 @@ public class CreateOfferActivity extends AppCompatActivity {
         StorageReference imageRef = storageRef.child("OfferPictures/" + offerId + "/" + timeStamp + "." + getFileExt(imageUri));
 
         UploadTask uploadTask = imageRef.putFile(imageUri);
+
+        uploadTask.addOnFailureListener(exception -> {
+            // Handle unsuccessful uploads
+            submitButton.setEnabled(true);
+            submitButton.setText("Post Offer");
+            Toast.makeText(this, "Image upload failed", Toast.LENGTH_SHORT).show();
+            Log.e("CreateOfferActivity", "Image upload failed", exception);
+        }).addOnSuccessListener(taskSnapshot -> {
+            // Get the download URL
+            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String imageUrl = uri.toString();
+
+                // Now, create the Offer object and upload to Firestore
+                uploadOfferData(offerId, offerName, offerCategory, offerDescription, offerAvailableDate, offerPickUpLocation, offerGeoPoint, imageUrl);
+            });
+        });
     }
 
     private String getFileExt(Uri uri) {
