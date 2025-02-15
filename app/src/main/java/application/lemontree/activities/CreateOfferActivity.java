@@ -512,6 +512,30 @@ public class CreateOfferActivity extends AppCompatActivity {
                 File imageFile = new File(uri.getPath());
                 fileSizeInBytes = imageFile.length();
             }
+            // For images selected from gallery (Content Uri)
+            else if ("content".equals(uri.getScheme())) {
+                Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+                if (cursor != null && cursor.moveToFirst()) {
+                    int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+                    fileSizeInBytes = cursor.getLong(sizeIndex);
+                    cursor.close();
+                } else {
+                    // Unable to retrieve file size
+                    return false;
+                }
+            } else {
+                // Unsupported URI scheme
+                return false;
+            }
+
+            // Convert bytes to MB
+            long fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+
+            // Log the file size in MB
+            Log.d("Image Size", "File size: " + fileSizeInMB + " MB");
+
+            // Check if file size exceeds 20MB
+            return fileSizeInMB <= 20;
 
         } catch (Exception e) {
             e.printStackTrace();
