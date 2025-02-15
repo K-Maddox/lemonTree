@@ -502,4 +502,20 @@ public class CreateOfferActivity extends AppCompatActivity {
         }
 //        }
     }
+
+    // Method to check the file size
+    private boolean checkFileSize(Uri uri) {
+        long fileSizeInBytes = 0;
+        try {
+            // For images captured by camera (File Uri)
+            if ("file".equals(uri.getScheme())) {
+                File imageFile = new File(uri.getPath());
+                fileSizeInBytes = imageFile.length();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false; // Unable to get file size, consider invalid
+        }
+    }
 }
