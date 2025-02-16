@@ -79,6 +79,7 @@ public class CreateOfferActivity extends AppCompatActivity {
     private boolean isImageValid = true;
     private boolean isImageSizeValid = true;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
