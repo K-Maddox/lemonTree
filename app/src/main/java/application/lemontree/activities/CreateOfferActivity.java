@@ -551,6 +551,23 @@ public class CreateOfferActivity extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        // Create and show the DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
+            // Create a Calendar instance with the selected date
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.set(selectedYear, selectedMonth, selectedDay);
+
+            // Check if the selected date is in the past
+            if (selectedDate.before(Calendar.getInstance())) {
+                // If the date is in the past, set the helper text with the error message
+                offerAvailableDateInputLayout.setHelperText("Please Choose A Future Date*");
+                offerAvailableDateInputLayout.setHelperTextColor(getResources().getColorStateList(R.color.red));  // Set helper text color to red
+            } else {
+                // If the date is valid, clear any error and update the EditText with the selected date
+                offerAvailableDateInputLayout.setHelperText(null);  // Clear the helper text
+                offerAvailableDateEditText.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
+            }
+        }, year, month, day);
 
         datePickerDialog.show();
     }
