@@ -542,4 +542,16 @@ public class CreateOfferActivity extends AppCompatActivity {
             return false; // Unable to get file size, consider invalid
         }
     }
+
+    // Show DatePickerDialog
+    private void showDatePicker() {
+        // Get current date to set as the default
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+        datePickerDialog.show();
+    }
 }
