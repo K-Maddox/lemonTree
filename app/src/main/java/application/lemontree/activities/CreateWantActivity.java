@@ -62,4 +62,11 @@ public class CreateWantActivity extends AppCompatActivity {
             });
         }
     }
+
+    // Helper method to clear focus from all focusable EditText fields
+    private void clearFocusableEditTextFocus() {
+        wantNameEditText.clearFocus();
+        wantDescriptionEditText.clearFocus();
+        wantCategory.clearFocus();
+    }
 }
