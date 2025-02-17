@@ -34,4 +34,16 @@ import application.lemontree.models.Want;
 import application.lemontree.services.LocationGetService;
 
 public class CreateWantActivity extends AppCompatActivity {
+
+    String[] categoryList = {"Food", "Herbs", "Seeds", "Flowers", "Garden"};
+    AutoCompleteTextView wantCategory;
+    ArrayAdapter<String> categoryItems;
+    private EditText wantNameEditText, wantDescriptionEditText, wantAvailableDateEditText;
+    private TextInputLayout wantNameInputLayout, wantCategoryDropDown, wantDescriptionInputLayout, wantAvailableDateInputLayout;
+    private List<FieldValidationPair> fieldValidationPairs = new ArrayList<>();
+    private Button wantAvailDateButton, submitButton;
+    private LocationGetService locationGetService;
+    private GeoPoint userLocation;
+
+    private boolean isValid = true;  // Single validation flag
 }
