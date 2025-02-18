@@ -87,6 +87,35 @@ public class CreateWantActivity extends AppCompatActivity {
         return editText.getText().toString().trim().isEmpty();
     }
 
+    // Show DatePickerDialog
+    private void showDatePicker() {
+        // Get current date to set as the default
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Create and show the DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, selectedYear, selectedMonth, selectedDay) -> {
+            // Create a Calendar instance with the selected date
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.set(selectedYear, selectedMonth, selectedDay);
+
+            // Check if the selected date is in the past
+            if (selectedDate.before(Calendar.getInstance())) {
+                // If the date is in the past, set the helper text with the error message
+                wantAvailableDateInputLayout.setHelperText("Please Choose A Future Date*");
+                wantAvailableDateInputLayout.setHelperTextColor(getResources().getColorStateList(R.color.red));  // Set helper text color to red
+            } else {
+                // If the date is valid, clear any error and update the EditText with the selected date
+                wantAvailableDateInputLayout.setHelperText(null);  // Clear the helper text
+                wantAvailableDateEditText.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
+            }
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
     @Override
     public void onBackPressed() {
         // Create a confirmation dialog when the back button is pressed
