@@ -86,4 +86,21 @@ public class CreateWantActivity extends AppCompatActivity {
     private boolean isEmptyText(EditText editText) {
         return editText.getText().toString().trim().isEmpty();
     }
+
+    @Override
+    public void onBackPressed() {
+        // Create a confirmation dialog when the back button is pressed
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit? Any unsaved changes will be lost.")
+                .setCancelable(false)  // Prevents the dialog from being dismissed with back press or outside touch
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    // If 'Yes' is clicked, call the default onBackPressed() to proceed
+                    CreateWantActivity.super.onBackPressed();
+                })
+                .setNegativeButton("No", (dialog, id) -> {
+                    // If 'No' is clicked, dismiss the dialog and stay in the activity
+                    dialog.dismiss();
+                })
+                .show();
+    }
 }
