@@ -69,4 +69,16 @@ public class CreateWantActivity extends AppCompatActivity {
         wantDescriptionEditText.clearFocus();
         wantCategory.clearFocus();
     }
+
+    // Helper methods
+    private boolean validateField(EditText editText, TextInputLayout inputLayout, String errorMessage) {
+        if (isEmptyText(editText)) {
+            inputLayout.setHelperText(errorMessage);
+            inputLayout.setHelperTextColor(getResources().getColorStateList(R.color.red));
+            return false;  // Field is invalid
+        } else {
+            inputLayout.setHelperText(null); // Clear helper text if valid
+            return true;  // Field is valid
+        }
+    }
 }
