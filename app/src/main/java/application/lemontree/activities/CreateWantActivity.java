@@ -87,6 +87,27 @@ public class CreateWantActivity extends AppCompatActivity {
         return editText.getText().toString().trim().isEmpty();
     }
 
+    private void uploadWantToFirebase() {
+        // Collect data from UI elements
+        String wantName = wantNameEditText.getText().toString().trim();
+        String wantCat = wantCategory.getText().toString().trim();
+        String wantDescription = wantDescriptionEditText.getText().toString().trim();
+        String wantAvailableDate = wantAvailableDateEditText.getText().toString().trim();
+
+        // Get current user's ID
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            submitButton.setText("Post Offer");
+            return;
+        }
+        String userId = user.getUid();
+
+        // Get user's profile URL and username
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    }
+
     // Show DatePickerDialog
     private void showDatePicker() {
         // Get current date to set as the default
