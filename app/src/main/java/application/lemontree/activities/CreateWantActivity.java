@@ -47,6 +47,25 @@ public class CreateWantActivity extends AppCompatActivity {
 
     private boolean isValid = true;  // Single validation flag
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_want);
+
+        wantNameEditText = findViewById(R.id.wantNameEditText);
+        wantCategory = findViewById(R.id.wantCategory);
+        wantDescriptionEditText = findViewById(R.id.wantDescriptionEditText);
+        wantAvailableDateEditText = findViewById(R.id.wantAvailableDateEditText);
+
+        wantNameInputLayout = findViewById(R.id.wantNameInputLayout);
+        wantCategoryDropDown = findViewById(R.id.wantCategoryDropDown);
+        wantDescriptionInputLayout = findViewById(R.id.wantDescriptionInputLayout);
+        wantAvailableDateInputLayout = findViewById(R.id.wantAvailableDateInputLayout);
+
+        submitButton = findViewById(R.id.submitWantButton);
+        wantAvailDateButton = findViewById(R.id.wantAvailDateButton);
+
+    }
 
     private void setOnFocusListeners() {
         for (FieldValidationPair pair : fieldValidationPairs) {
