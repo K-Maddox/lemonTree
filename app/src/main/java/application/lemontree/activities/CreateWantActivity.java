@@ -106,6 +106,50 @@ public class CreateWantActivity extends AppCompatActivity {
         // Get user's profile URL and username
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // Generate a new document ID for the "want" post
+        DocumentReference wantRef = db.collection("wants").document();
+        String wantId = wantRef.getId();  // Generate a unique ID for the new document
+
+        db.collection("profiles").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    String userProfileUrl = documentSnapshot.getString("profilePictureURL");
+                    String username = documentSnapshot.getString("username");
+
+                    // Create a want object
+                    Want want = new Want();
+                    want.setWantId(wantId); // Set the wantId
+                    want.setWantName(wantName);
+                    want.setWantCategory(wantCat);
+                    want.setWantDescription(wantDescription);
+                    want.setWantAvailableDate(wantAvailableDate);
+                    want.setCreatedBy(userId);
+                    want.setUserProfileUrl(userProfileUrl);
+                    want.setCreatedByUsername(username);
+                    want.setCreatedAt(new com.google.firebase.Timestamp(new Date()));
+                    want.setLocation(userLocation);
+                    want.setStatus("active");
+
+                    // Upload to Firestore using the same wantId
+                    db.collection("wants").document(wantId)
+                            .set(want)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(CreateWantActivity.this, "Wanted offer uploaded successfully", Toast.LENGTH_SHORT).show();
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                submitButton.setEnabled(true);
+                                submitButton.setText("Post Offer");
+                                Toast.makeText(CreateWantActivity.this, "Error uploading wanted offer: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.e("CreateWantActivity", "Error uploading wanted offer", e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    submitButton.setEnabled(true);
+                    submitButton.setText("Post Offer");
+                    Toast.makeText(CreateWantActivity.this, "Failed to get user profile", Toast.LENGTH_SHORT).show();
+                    Log.e("CreateWantActivity", "Failed to get user profile", e);
+                });
+
     }
 
     // Show DatePickerDialog
