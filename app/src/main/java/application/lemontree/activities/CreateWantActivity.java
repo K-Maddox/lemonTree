@@ -84,6 +84,46 @@ public class CreateWantActivity extends AppCompatActivity {
             }
         });
 
+        // Set up DatePicker
+        wantAvailDateButton.setOnClickListener(v -> {
+            // Clear focus from other fields
+            clearFocusableEditTextFocus();
+            // Trigger the date picker
+            showDatePicker();
+        });
+        wantAvailableDateEditText.setOnClickListener(v -> {
+            // Clear focus from other fields
+            clearFocusableEditTextFocus();
+            // Trigger the date picker
+            showDatePicker();
+        });
+
+        // Handle form submission
+        submitButton.setOnClickListener(v -> {
+            // Validate all fields again at submission time
+            isValid = true;  // Reset the flag to true
+            for (FieldValidationPair pair : fieldValidationPairs) {
+                if (!validateField(pair.editText, pair.inputLayout, "Required*")) {
+                    isValid = false;
+                }
+            }
+
+            // Proceed if all validations are successful
+            if (isValid) {
+                if (userLocation == null) {
+                    Toast.makeText(CreateWantActivity.this, "Location is not available. Please try again.", Toast.LENGTH_SHORT).show();
+                    return;  // Ensure we have a location before proceeding
+                }
+                // Disable the button to prevent multiple clicks
+                submitButton.setEnabled(false);
+                submitButton.setText("Posting...");
+                // All required fields are filled, proceed with saving or submitting the offer
+                uploadWantToFirebase();
+            } else {
+                Toast.makeText(CreateWantActivity.this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void setOnFocusListeners() {
