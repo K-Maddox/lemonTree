@@ -124,6 +124,21 @@ public class CreateWantActivity extends AppCompatActivity {
             }
         });
 
+        locationGetService = new LocationGetService(this);
+
+        // Get the user's current location
+        locationGetService.getLastLocation(new LocationGetService.OnLocationReceivedListener() {
+            @Override
+            public void onLocationReceived(Location location) {
+                // Store the user's location as GeoPoint
+                userLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
+            }
+
+            @Override
+            public void onLocationError(String error) {
+                Toast.makeText(CreateWantActivity.this, "Failed to get location: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setOnFocusListeners() {
