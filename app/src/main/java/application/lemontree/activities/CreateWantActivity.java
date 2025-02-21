@@ -34,7 +34,6 @@ import application.lemontree.models.Want;
 import application.lemontree.services.LocationGetService;
 
 public class CreateWantActivity extends AppCompatActivity {
-
     String[] categoryList = {"Food", "Herbs", "Seeds", "Flowers", "Garden"};
     AutoCompleteTextView wantCategory;
     ArrayAdapter<String> categoryItems;
@@ -139,6 +138,7 @@ public class CreateWantActivity extends AppCompatActivity {
                 Toast.makeText(CreateWantActivity.this, "Failed to get location: " + error, Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void setOnFocusListeners() {
@@ -274,6 +274,7 @@ public class CreateWantActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+
     @Override
     public void onBackPressed() {
         // Create a confirmation dialog when the back button is pressed
@@ -290,4 +291,5 @@ public class CreateWantActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
 }
