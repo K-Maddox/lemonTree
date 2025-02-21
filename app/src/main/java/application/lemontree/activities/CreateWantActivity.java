@@ -65,6 +65,25 @@ public class CreateWantActivity extends AppCompatActivity {
         submitButton = findViewById(R.id.submitWantButton);
         wantAvailDateButton = findViewById(R.id.wantAvailDateButton);
 
+        // Add field pairs to the list
+        fieldValidationPairs.add(new FieldValidationPair(wantNameEditText, wantNameInputLayout));
+        fieldValidationPairs.add(new FieldValidationPair(wantCategory, wantCategoryDropDown));
+        fieldValidationPairs.add(new FieldValidationPair(wantDescriptionEditText, wantDescriptionInputLayout));
+        fieldValidationPairs.add(new FieldValidationPair(wantAvailableDateEditText, wantAvailableDateInputLayout));
+
+        // Set focus change listeners to validate fields dynamically
+        setOnFocusListeners();
+
+        // wantCategory dropdown list
+        categoryItems = new ArrayAdapter<String>(this, R.layout.category_item, categoryList);
+        wantCategory.setAdapter(categoryItems);
+        wantCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+            }
+        });
+
     }
 
     private void setOnFocusListeners() {
