@@ -42,4 +42,20 @@ import java.util.Locale;
 import application.lemontree.R;
 
 public class LocationSelectActivity {
+
+    private final int FINE_PERMISSION_CODE = 1;
+    private GoogleMap myMap;
+    private SearchView mapSearchView;
+    private ImageButton mapTypeButton;
+    private ImageButton selectLocationButton;
+    private LatLng selectedLocation;
+    private String selectedLocationName;
+
+    Location currentLocation;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    LocationRequest locationRequest;
+    LocationCallback locationCallback;
+
+    private boolean isInitialLocationSet = false;  // flag to prevent camera reset after the first location update
+
 }
