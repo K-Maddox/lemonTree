@@ -58,4 +58,22 @@ public class LocationSelectActivity {
 
     private boolean isInitialLocationSet = false;  // flag to prevent camera reset after the first location update
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_location_select);
+
+        mapSearchView = findViewById(R.id.mapSearch);
+        mapTypeButton = findViewById(R.id.mapTypeButton);
+        selectLocationButton = findViewById(R.id.selectLocationButton);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Create LocationRequest with high accuracy and frequent updates
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(60000);  // Update every 5 seconds
+
+        // Create LocationCallback to receive location updates
+
 }
