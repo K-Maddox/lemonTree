@@ -178,4 +178,11 @@ public class LocationSelectActivity {
             }
         });
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Stop location updates to save battery
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+    }
 }
