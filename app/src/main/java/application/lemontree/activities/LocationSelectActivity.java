@@ -109,6 +109,34 @@ public class LocationSelectActivity {
                         addressList = geocoder.getFromLocationName(location, 1);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
+                    }
+
+                    if (addressList != null && !addressList.isEmpty()) {
+                        Address address = addressList.get(0);
+                        selectedLocation = new LatLng(address.getLatitude(), address.getLongitude()); // Store the searched location
+
+                        // Extract the suburb/locality
+                        selectedLocationName = address.getLocality();
+
+                        // In case locality is not available, fall back to sub-admin area (county or district)
+                        if (selectedLocationName == null || selectedLocationName.isEmpty()) {
+                            selectedLocationName = address.getSubAdminArea();
+                        }
+
+                        // If still not available
+                        if (selectedLocationName == null || selectedLocationName.isEmpty()) {
+                            //selectedLocationName = address.getAddressLine(0);
+                            selectedLocationName = location; // Use the search bar query as the location name
+                        }
+
+                        myMap.clear();  // Clear previous markers
+                        myMap.addMarker(new MarkerOptions()
+                                .position(selectedLocation)
+                                .title(selectedLocationName)
+                                .icon(getMarkerIconFromColor(R.color.colorPrimary)));
+                        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedLocation, 15));  // Stay at the searched location
+
+                        selectLocationButton.setVisibility(View.VISIBLE);
                     } else {
                         Toast.makeText(LocationSelectActivity.this, "Location not found", Toast.LENGTH_SHORT).show();
                     }
