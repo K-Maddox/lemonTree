@@ -185,6 +185,17 @@ public class LocationSelectActivity {
         try {
             // Get the list of addresses for the given latitude and longitude
             List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+
+            if (addresses != null && !addresses.isEmpty()) {
+                // Return the locality (suburb) from the address
+                String suburbName = addresses.get(0).getLocality();
+                if (suburbName != null && !suburbName.isEmpty()) {
+                    return suburbName;
+                } else {
+                    // Fall back to sub-admin area or address line if locality is not available
+                    return addresses.get(0).getSubAdminArea() != null ? addresses.get(0).getSubAdminArea() : addresses.get(0).getAddressLine(0);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
