@@ -150,4 +150,23 @@ public class LocationSelectActivity {
             }
         });
 
+        // Handle click on the "Select" button
+        selectLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedLocation != null && selectedLocationName != null) {
+                    // Create an intent to hold the selected location
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("selected_location_name", selectedLocationName);
+                    resultIntent.putExtra("selected_latitude", selectedLocation.latitude);
+                    resultIntent.putExtra("selected_longitude", selectedLocation.longitude);
+
+                    // Set the result of this activity, so the CreateOfferActivity can receive the selected location
+                    setResult(Activity.RESULT_OK, resultIntent);
+
+                    // Finish the activity and go back to CreateOfferActivity
+                    finish();
+                }
+            }
+        });
 }
