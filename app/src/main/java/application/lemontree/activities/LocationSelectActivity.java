@@ -179,6 +179,18 @@ public class LocationSelectActivity {
         });
     }
 
+    // Method to get the suburb (locality) name from the location
+    private String getSuburbNameFromLocation(LatLng latLng) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            // Get the list of addresses for the given latitude and longitude
+            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Unknown Location"; // Return a default value if location name is not available
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
