@@ -169,4 +169,13 @@ public class LocationSelectActivity {
                 }
             }
         });
+
+        // Set up click listener for the ImageButton to open the Bottom Sheet Dialog
+        mapTypeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBottomSheetDialog();
+            }
+        });
+    }
 }
