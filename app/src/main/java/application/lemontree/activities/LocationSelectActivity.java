@@ -75,5 +75,24 @@ public class LocationSelectActivity {
         locationRequest.setInterval(60000);  // Update every 5 seconds
 
         // Create LocationCallback to receive location updates
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    currentLocation = location;
+                    // Move the map to the current location only once when the app is first opened
+                    if (!isInitialLocationSet & currentLocation != null) {
+                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                        if (mapFragment != null) {
+                            mapFragment.getMapAsync(LocationSelectActivity.this);
+                        }
+                        isInitialLocationSet = true;  // Set the flag to true after the first move
+                    }
+                }
+            }
+        };
 
 }
