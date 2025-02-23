@@ -180,6 +180,18 @@ public class LocationSelectActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestLocationUpdates();
+            } else {
+                Toast.makeText(this, "Location permission is required.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         // Stop location updates to save battery
