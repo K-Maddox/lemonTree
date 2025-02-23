@@ -179,6 +179,19 @@ public class LocationSelectActivity {
         });
     }
 
+    // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
+    private BitmapDescriptor getMarkerIconFromColor(int colorResId) {
+        // Get the color from the resources
+        int color = ContextCompat.getColor(this, colorResId);
+
+        // Convert the color to HSV (Hue, Saturation, Value)
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+
+        // Return the marker icon based on the hue (hsv[0])
+        return BitmapDescriptorFactory.defaultMarker(hsv[0]);
+    }
+
     // Method to get the suburb (locality) name from the location
     private String getSuburbNameFromLocation(LatLng latLng) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
