@@ -179,6 +179,35 @@ public class LocationSelectActivity {
         });
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        myMap = googleMap;
+
+        // Enable Zoom Controls
+        myMap.getUiSettings().setZoomControlsEnabled(true);
+
+        // Enable Compass (will only show when the map is rotated)
+        myMap.getUiSettings().setCompassEnabled(true);
+
+        // Enable gesture-based zoom (pinch-to-zoom)
+        myMap.getUiSettings().setZoomGesturesEnabled(true);
+
+        // Enable gesture-based change angle (scroll)
+        myMap.getUiSettings().setScrollGesturesEnabled(true);
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
+            return;
+        }
+        // Enable the “my location” button, which centers the map on the user’s current location.
+        myMap.setMyLocationEnabled(true);
+
+        if (currentLocation != null) {
+            LatLng defaultLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15));  // Move to current location initially
+        }
+    }
+
     // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
     private BitmapDescriptor getMarkerIconFromColor(int colorResId) {
         // Get the color from the resources
