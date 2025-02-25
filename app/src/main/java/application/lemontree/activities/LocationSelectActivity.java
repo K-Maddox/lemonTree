@@ -206,6 +206,53 @@ public class LocationSelectActivity {
             LatLng defaultLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15));  // Move to current location initially
         }
+
+        // Add listener to handle "my location" button click
+        myMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                // Get the current location and show the select location button
+                if (currentLocation != null) {
+                    LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+
+                    // Move the camera to the current location and add a marker
+                    myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                    myMap.clear();  // Clear previous markers
+                    myMap.addMarker(new MarkerOptions()
+                            .position(currentLatLng)
+                            .title("Your Location")
+                            .icon(getMarkerIconFromColor(R.color.colorPrimary)));
+
+                    // Show the select location button
+                    selectLocationButton.setVisibility(View.VISIBLE);
+
+                    // Optionally, set this location as selected
+                    selectedLocation = currentLatLng;
+                    selectedLocationName = getSuburbNameFromLocation(currentLatLng);
+                }
+
+                // Return false to allow default behavior (centering on location)
+                return false;
+            }
+        });
+
+        // Add listener for long-press on map to set location
+        myMap.setOnMapLongClickListener(latLng -> {
+            // Clear existing markers
+            myMap.clear();
+            myMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title("Selected Location")
+                    .icon(getMarkerIconFromColor(R.color.colorPrimary)));
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+            // Store the selected location
+            selectedLocation = latLng;
+            selectedLocationName = getSuburbNameFromLocation(latLng);
+
+            // Show the select location button
+            selectLocationButton.setVisibility(View.VISIBLE);
+        });
     }
 
     // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
