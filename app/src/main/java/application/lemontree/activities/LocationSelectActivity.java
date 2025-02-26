@@ -230,6 +230,30 @@ public class LocationSelectActivity {
         bottomSheetDialog.show();
     }
 
+    private void requestLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
+            return;
+        }
+
+        // Get the initial location immediately
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+            if (location != null) {
+                currentLocation = location;
+                isInitialLocationSet = true;
+                SupportMapFragment mapFragment =
+                        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                if (mapFragment != null) {
+                    mapFragment.getMapAsync(LocationSelectActivity.this);
+                }
+            }
+
+        });
+
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+    }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
