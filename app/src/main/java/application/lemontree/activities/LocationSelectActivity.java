@@ -179,6 +179,57 @@ public class LocationSelectActivity {
         });
     }
 
+    // Method to open the Bottom Sheet Dialog for map types
+    private void showBottomSheetDialog() {
+        // Create a BottomSheetDialog
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(LocationSelectActivity.this);
+        View bottomSheetView = getLayoutInflater().inflate(R.layout.bottom_sheet_map_type, null);
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        // Set up the click listeners for each map type option
+        Button mapTypeNormal = bottomSheetView.findViewById(R.id.mapTypeNormal);
+        Button mapTypeSatellite = bottomSheetView.findViewById(R.id.mapTypeSatellite);
+        ImageView defaultIcon = bottomSheetView.findViewById(R.id.defaultIcon);
+        ImageView satelliteIcon = bottomSheetView.findViewById(R.id.satelliteIcon);
+
+        // Set click listeners for the buttons
+        mapTypeNormal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                bottomSheetDialog.dismiss();  // Close the dialog after selection
+            }
+        });
+
+        mapTypeSatellite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                bottomSheetDialog.dismiss();  // Close the dialog after selection
+            }
+        });
+
+        // Set click listeners for the ImageViews
+        defaultIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        satelliteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        // Show the BottomSheetDialog
+        bottomSheetDialog.show();
+    }
+
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         myMap = googleMap;
