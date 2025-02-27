@@ -41,7 +41,7 @@ import java.util.Locale;
 
 import application.lemontree.R;
 
-public class LocationSelectActivity {
+public class LocationSelectActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final int FINE_PERMISSION_CODE = 1;
     private GoogleMap myMap;
@@ -328,66 +328,6 @@ public class LocationSelectActivity {
             // Show the select location button
             selectLocationButton.setVisibility(View.VISIBLE);
         });
-    }
-
-    // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
-    private BitmapDescriptor getMarkerIconFromColor(int colorResId) {
-        // Get the color from the resources
-        int color = ContextCompat.getColor(this, colorResId);
-
-        // Convert the color to HSV (Hue, Saturation, Value)
-        float[] hsv = new float[3];
-        Color.colorToHSV(color, hsv);
-
-        // Return the marker icon based on the hue (hsv[0])
-        return BitmapDescriptorFactory.defaultMarker(hsv[0]);
-    }
-
-    // Method to get the suburb (locality) name from the location
-    private String getSuburbNameFromLocation(LatLng latLng) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            // Get the list of addresses for the given latitude and longitude
-            List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-
-            if (addresses != null && !addresses.isEmpty()) {
-                // Return the locality (suburb) from the address
-                String suburbName = addresses.get(0).getLocality();
-                if (suburbName != null && !suburbName.isEmpty()) {
-                    return suburbName;
-                } else {
-                    // Fall back to sub-admin area or address line if locality is not available
-                    return addresses.get(0).getSubAdminArea() != null ? addresses.get(0).getSubAdminArea() : addresses.get(0).getAddressLine(0);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "Unknown Location"; // Return a default value if location name is not available
-    }
-
-    private void requestLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
-            return;
-        }
-
-        // Get the initial location immediately
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
-            if (location != null) {
-                currentLocation = location;
-                isInitialLocationSet = true;
-                SupportMapFragment mapFragment =
-                        (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                if (mapFragment != null) {
-                    mapFragment.getMapAsync(LocationSelectActivity.this);
-                }
-            }
-
-        });
-
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
     // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
