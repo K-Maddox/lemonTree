@@ -93,4 +93,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Toast.makeText(MapActivity.this, "Location not available", Toast.LENGTH_SHORT).show();
         }
     }
+
+    // Method to filter wants based on a new radius
+    private void filterWants(int newRadius) {
+        radius = newRadius; // Update radius based on filter
+        if (currentLocation != null) {
+            getWantsInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+        } else {
+            Toast.makeText(MapActivity.this, "Location not available", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
