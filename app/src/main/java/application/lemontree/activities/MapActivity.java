@@ -84,4 +84,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private View popupView;
     private Marker previousMarker = null;  // To store the previously clicked marker
 
+    // Method to filter offers based on a new radius
+    private void filterOffers(int newRadius) {
+        radius = newRadius; // Update radius based on filter
+        if (currentLocation != null) {
+            getOffersInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+        } else {
+            Toast.makeText(MapActivity.this, "Location not available", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
