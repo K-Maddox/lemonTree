@@ -56,5 +56,32 @@ import application.lemontree.models.Offer;
 import application.lemontree.models.Want;
 import application.lemontree.services.LocationGetService;
 
-public class MapActivity {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+
+    private static final int FINE_PERMISSION_CODE = 1;
+    private GoogleMap myMap;
+    private SearchView mapSearchView;
+    private ImageButton filterLocationButton;
+    private Location currentLocation;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+
+    private boolean isInitialLocationSet = false;
+
+    private LocationGetService locationGetService;
+
+    private String source;
+    public int radius;
+    private FilterDialogFragment filterDialog;
+
+    // Data pulled from the database
+    private ArrayList<Offer> offerList;
+    private ArrayList<Want> wantList;
+
+    // Reference to the PopupWindow and its content view
+    private PopupWindow popupWindow;
+    private View popupView;
+    private Marker previousMarker = null;  // To store the previously clicked marker
+
 }
