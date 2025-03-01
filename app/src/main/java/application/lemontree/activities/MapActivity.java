@@ -116,4 +116,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // Return the marker icon based on the hue (hsv[0])
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
+
+    // Handle location permission results
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == FINE_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                requestLocationUpdates();
+            } else {
+                Toast.makeText(this, "Location permission is required.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
