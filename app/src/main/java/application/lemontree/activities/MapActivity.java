@@ -229,6 +229,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        if (addressList == null || addressList.isEmpty()) {
+            Toast.makeText(MapActivity.this, "Location not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Address address = addressList.get(0);
+        LatLng searchedLocation = new LatLng(address.getLatitude(), address.getLongitude());
+
+        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(searchedLocation, 13));
+
+        // Fetch data in the new location based on the source
+        if ("offer".equals(source)) {
+            getOffersInRadius(new GeoPoint(address.getLatitude(), address.getLongitude()));
+        } else if ("want".equals(source)) {
+            getWantsInRadius(new GeoPoint(address.getLatitude(), address.getLongitude()));
+        }
     }
 
     // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
