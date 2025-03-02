@@ -84,6 +84,51 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private View popupView;
     private Marker previousMarker = null;  // To store the previously clicked marker
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map);
+
+        source = getIntent().getStringExtra("source");
+
+        // Retrieve the radius from the intent
+        radius = getIntent().getIntExtra("radius", 5);  // Default to 5 if no value is passed
+
+        mapSearchView = findViewById(R.id.offerSearchView);
+        filterLocationButton = findViewById(R.id.filterLocationButton);
+        View topSection = findViewById(R.id.topSection);  // Reference to the top section
+
+        offerList = new ArrayList<>();
+        wantList = new ArrayList<>();
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        locationGetService = new LocationGetService(this);
+
+        // Create LocationRequest with high accuracy and frequent updates
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(60000);  // Update every 5 seconds
+
+        // Create LocationCallback to receive location updates
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                currentLocation = locationResult.getLastLocation();
+
+                if (!isInitialLocationSet && currentLocation != null) {
+                    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.offerSearchMap);
+                    if (mapFragment != null) {
+                        mapFragment.getMapAsync(MapActivity.this);
+                    }
+                    isInitialLocationSet = true;
+                }
+            }
+        };
+
     // Method to filter offers based on a new radius
     private void filterOffers(int newRadius) {
         radius = newRadius; // Update radius based on filter
