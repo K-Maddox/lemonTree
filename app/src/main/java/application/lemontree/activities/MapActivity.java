@@ -216,6 +216,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private void searchLocationAndDisplayOffers(String location) {
+        if (location == null || location.isEmpty()) {
+            return;
+        }
+
+        Geocoder geocoder = new Geocoder(MapActivity.this);
+        List<Address> addressList = null;
+
+        try {
+            addressList = geocoder.getFromLocationName(location, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
     private BitmapDescriptor getMarkerIconFromColor(int colorResId) {
         // Get the color from the resources
