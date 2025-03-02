@@ -129,6 +129,73 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         };
 
+        requestLocationUpdates();
+
+        mapSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchLocationAndDisplayOffers(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        filterDialog = new FilterDialogFragment();
+        filterLocationButton.setOnClickListener(view -> {
+            // Check if we are filtering offers or wants based on the source
+            if (source != null && source.equals("offer")) {
+                FilterHelper.showFilterDialog(getSupportFragmentManager(), filterDialog, radius, this::filterOffers);
+            } else if (source != null && source.equals("want")) {
+                FilterHelper.showFilterDialog(getSupportFragmentManager(), filterDialog, radius, this::filterWants);
+            }
+        });
+
+
+        // Inflate the popup layout once
+        popupView = getLayoutInflater().inflate(R.layout.offer_popup_layout, null);
+
+        // Create the PopupWindow but don't show it yet
+        popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        popupWindow.setFocusable(true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setTouchable(true);
+
+        // Set a transparent background to enable elevation and outline
+        popupWindow.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        // Add a click listener to the top section
+        topSection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dismiss the popup window if it is showing
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                }
+            }
+        });
+
+        if (source != null && source.equals("offer")) {
+            // Fetch offers
+            if (currentLocation != null) {
+                getOffersInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            }
+        } else if (source != null && source.equals("want")) {
+            // Fetch wants
+            if (currentLocation != null) {
+                getWantsInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            }
+        }
+    }
+
     // Method to filter offers based on a new radius
     private void filterOffers(int newRadius) {
         radius = newRadius; // Update radius based on filter
