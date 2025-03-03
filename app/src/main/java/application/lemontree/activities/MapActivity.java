@@ -304,6 +304,42 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 getWantsInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
             }
         }
+
+        // Handle "my location" button click
+        myMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                if (currentLocation != null) {
+                    LatLng currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+
+                    // Move the camera to the current location
+                    myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 13));
+
+                    // Check the source and fetch data accordingly
+                    if ("offer".equals(source)) {
+                        // Fetch offers in the current location
+                        getOffersInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                    } else if ("want".equals(source)) {
+                        // Fetch wants in the current location
+                        getWantsInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+                    }
+                }
+                return false;
+            }
+        });
+
+        // Dismiss popup window when map is clicked
+        myMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss();
+                }
+            }
+        });
+
+        // Set marker click listener
+        myMap.setOnMarkerClickListener(this);
     }
 
     // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
