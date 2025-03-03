@@ -355,6 +355,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Stop location updates to save battery
+        stopLocationUpdates();
+    }
+
     // Handle location permission results
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
