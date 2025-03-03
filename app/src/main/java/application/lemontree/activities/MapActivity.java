@@ -271,6 +271,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        myMap = googleMap;
+
+        // Enable Zoom Controls
+        myMap.getUiSettings().setZoomControlsEnabled(true);
+
+        // Enable Compass
+        myMap.getUiSettings().setCompassEnabled(true);
+
+        // Enable gesture-based zoom
+        myMap.getUiSettings().setZoomGesturesEnabled(true);
+
+        // Enable gesture-based change angle
+        myMap.getUiSettings().setScrollGesturesEnabled(true);
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, FINE_PERMISSION_CODE);
+            return;
+        }
+        // Enable the “my location” button
+        myMap.setMyLocationEnabled(true);
+
+        if (currentLocation != null) {
+            LatLng defaultLocation = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 13));
+
+            if ("offer".equals(source)) {
+                getOffersInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            } else if ("want".equals(source)) {
+                getWantsInRadius(new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude()));
+            }
+        }
+    }
+
     // Method to convert a color from colors.xml to a BitmapDescriptor for the marker
     private BitmapDescriptor getMarkerIconFromColor(int colorResId) {
         // Get the color from the resources
