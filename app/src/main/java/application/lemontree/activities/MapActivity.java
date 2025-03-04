@@ -355,6 +355,38 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
+    private void updateWantPopup(Want want) {
+        TextView wantTitleTextView = popupView.findViewById(R.id.offerTitleTextView);
+        ImageView wantImageView = popupView.findViewById(R.id.offerImageView);
+        TextView wantDetailTextView = popupView.findViewById(R.id.offerDetailTextView);
+        ImageButton navigateToDetailButton = popupView.findViewById(R.id.navigateToDetailButton);
+
+        wantTitleTextView.setText(want.getWantName());
+        //wantDetailTextView.setText(want.distance);
+        Glide.with(this).load(want.getUserProfileUrl()).into(wantImageView);
+
+        // Fetch the suburb from the want's location
+        if (want.getLocation() != null) {
+            // Run Geocoder in a background thread
+            new Thread(() -> {
+                String suburb = getSuburbFromLocation(want.getLocation());
+                String displayText = want.distance + " - " + suburb;
+                // Update the UI on the main thread
+                runOnUiThread(() -> {
+                    wantDetailTextView.setText(displayText);
+                });
+            }).start();
+        } else {
+            wantDetailTextView.setText(want.distance + " - Unknown location");
+        }
+
+        navigateToDetailButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MapActivity.this, WantedDetailActivity.class);
+            intent.putExtra("wantId", want.getWantId());
+            startActivity(intent);
+        });
+    }
+
     private String getSuburbFromLocation(GeoPoint location) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         List<Address> addresses = null;
