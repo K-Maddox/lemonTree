@@ -355,6 +355,34 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
+    private String getSuburbFromLocation(GeoPoint location) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Unknown location";
+        }
+
+        if (addresses != null && !addresses.isEmpty()) {
+            Address address = addresses.get(0);
+            String suburb = address.getSubLocality();
+            if (suburb == null || suburb.isEmpty()) {
+                suburb = address.getLocality();
+            }
+            if (suburb == null || suburb.isEmpty()) {
+                suburb = address.getAdminArea(); // State or region
+            }
+            if (suburb == null || suburb.isEmpty()) {
+                suburb = "Unknown location";
+            }
+            return suburb;
+        } else {
+            return "Unknown location";
+        }
+    }
+
     public void getWantsInRadius(GeoPoint location) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         double lowerLat = location.getLatitude() - ((double) radius / 110);
