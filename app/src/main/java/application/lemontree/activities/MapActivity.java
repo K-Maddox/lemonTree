@@ -355,6 +355,71 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
+    public void getWantsInRadius(GeoPoint location) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        double lowerLat = location.getLatitude() - ((double) radius / 110);
+        double upperLat = location.getLatitude() + ((double) radius / 110);
+        double lowerLng = location.getLongitude() - ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+        double upperLng = location.getLongitude() + ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+
+        db.collection("wants")
+                .whereGreaterThanOrEqualTo("location", new GeoPoint(lowerLat, lowerLng))
+                .whereLessThanOrEqualTo("location", new GeoPoint(upperLat, upperLng))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        wantList.clear();
+                        myMap.clear();
+                        Toast.makeText(getApplicationContext(), "No wants found in radius", Toast.LENGTH_SHORT).show();
+                        Log.i("getWantsInRadius", "No wants found in radius");
+                        return;
+                    }
+
+                    wantList.clear();
+                    myMap.clear();
+
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        Want w = getWantFromDocumentSnapshot(document);
+
+                        // Filter out non-active wants
+                        if (!"active".equalsIgnoreCase(w.getStatus())) {
+                            continue;
+                        }
+
+                        GeoPoint wantLocation = document.getGeoPoint("location");
+                        String title = document.getString("wantName");
+
+                        // Determine distance to want
+                        if (wantLocation != null) {
+                            float[] results = new float[1];
+                            Location.distanceBetween(location.getLatitude(),
+                                    location.getLongitude(), wantLocation.getLatitude(),
+                                    wantLocation.getLongitude(),
+                                    results);
+                            float distanceInMeters = results[0];
+                            float distanceInKilometers = distanceInMeters / 1000;
+                            Log.v("getWantsInRadius",
+                                    "Want: " + title + " Distance: " + distanceInKilometers +
+                                            " km");
+                            w.distance = String.format("%.2f km", distanceInKilometers);
+
+                            // Add marker to map
+                            LatLng wantLatLng = new LatLng(wantLocation.getLatitude(), wantLocation.getLongitude());
+                            Marker marker = myMap.addMarker(new MarkerOptions()
+                                    .position(wantLatLng)
+                                    .title(w.getWantName())
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                            marker.setTag(w); // Store the want object in the marker's tag
+                        } else {
+                            w.distance = "unknown";
+                        }
+
+                        wantList.add(w);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("getWantsInRadius", "Error getting documents", e));
+    }
+
     /**
      * Extracts data from the database and creates an Offer object.
      *
