@@ -355,6 +355,45 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
+    /**
+     * Extracts data from the database and creates an Offer object.
+     *
+     * @param document the document snapshot to convert
+     * @return An Offer object of the document.
+     */
+    protected Offer getOfferFromDocumentSnapshot(@NonNull DocumentSnapshot document) {
+        Offer o = new Offer();
+
+        o.setOfferName(document.getString("offerName"));
+        o.setOfferId(document.getId());
+        o.setImageUrl(document.getString("imageUrl"));
+        o.setUserProfileUrl(document.getString("userProfileUrl"));
+        o.setCreatedByUsername(document.getString("createdByUsername"));
+        o.setCreatedBy(document.getString("createdBy"));
+        o.setCreatedAt(document.getTimestamp("createdAt"));
+        String status = document.getString("status");
+        o.setStatus(status != null ? status : "active");
+        o.setOfferPickUpLocation(document.getString("offerPickUpLocation"));
+
+        return o;
+    }
+
+    protected Want getWantFromDocumentSnapshot(@NonNull DocumentSnapshot document) {
+        Want w = new Want();
+        w.setWantId(document.getId());
+        w.setWantName(document.getString("wantName"));
+        w.setWantDescription(document.getString("wantDescription"));
+        w.setWantAvailableDate(document.getString("wantAvailableDate"));
+        w.setWantCategory(document.getString("wantCategory"));
+        w.setCreatedBy(document.getString("createdBy"));
+        w.setUserProfileUrl(document.getString("userProfileUrl"));
+        w.setCreatedByUsername(document.getString("createdByUsername"));
+        w.setCreatedAt(document.getTimestamp("createdAt"));
+        w.setStatus(document.getString("status"));
+        w.setLocation(document.getGeoPoint("location"));
+        return w;
+    }
+
     private void stopLocationUpdates() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
