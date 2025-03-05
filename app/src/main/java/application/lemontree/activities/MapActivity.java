@@ -377,6 +377,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Set the color of the current clicked marker
         marker.setIcon(getMarkerIconFromColor(R.color.colorPrimary));
+
+        // Set z-index to bring the clicked marker to the front
+        marker.setZIndex(1.0f);  // Higher z-index brings it to the front
+
+        // Store the currently clicked marker as the previous one
+        previousMarker = marker;
+
+        // Move the camera to the clicked marker's position with a smooth animation
+        LatLng markerPosition = marker.getPosition();
+        myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 13)); // Zoom level 13 for a closer look
+
+        // If the popup window is not showing, show it
+        if (!popupWindow.isShowing()) {
+            popupWindow.showAtLocation(findViewById(R.id.offerSearchMap), Gravity.BOTTOM, 0, 0);
+        }
+
+        // Return true to indicate that we have consumed the event
+        return true;
     }
 
     private void updateOfferPopup(Offer offer) {
