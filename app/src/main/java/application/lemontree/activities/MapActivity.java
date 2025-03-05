@@ -355,6 +355,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
+    private void updateOfferPopup(Offer offer) {
+        // Initialize the views in the popup layout
+        TextView offerTitleTextView = popupView.findViewById(R.id.offerTitleTextView);
+        ImageView offerImageView = popupView.findViewById(R.id.offerImageView);
+        TextView offerDetailTextView = popupView.findViewById(R.id.offerDetailTextView);
+        ImageButton navigateToDetailButton = popupView.findViewById(R.id.navigateToDetailButton);  // The new ImageButton
+
+        // Set the offer details
+        offerTitleTextView.setText(offer.getOfferName());
+        offerDetailTextView.setText(offer.distance + " - " + offer.getOfferPickUpLocation());
+    }
+
     private void updateWantPopup(Want want) {
         TextView wantTitleTextView = popupView.findViewById(R.id.offerTitleTextView);
         ImageView wantImageView = popupView.findViewById(R.id.offerImageView);
