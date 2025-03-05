@@ -365,6 +365,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // Set the offer details
         offerTitleTextView.setText(offer.getOfferName());
         offerDetailTextView.setText(offer.distance + " - " + offer.getOfferPickUpLocation());
+
+        // Load the image using Glide
+        if (offer.getImageUrl() != null && !offer.getImageUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(offer.getImageUrl())
+                    .into(offerImageView);
+        } else {
+            // Set a placeholder image if there's no image URL
+            offerImageView.setImageResource(R.drawable.empty_image);
+        }
+
+        // Set the click listener for the view details button
+        navigateToDetailButton.setOnClickListener(v -> {
+            // Navigate to the OfferDetailActivity with the offer ID
+            Intent intent = new Intent(MapActivity.this, OfferDetailActivity.class);
+            intent.putExtra("offerId", offer.getOfferId());  // Pass the offerId to the detail activity
+            startActivity(intent);
+        });
     }
 
     private void updateWantPopup(Want want) {
