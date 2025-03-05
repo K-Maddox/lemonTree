@@ -367,6 +367,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Want want = (Want) tag;
             updateWantPopup(want);
         }
+
+        // Change the color of the clicked marker
+        if (previousMarker != null) {
+            // Reset the previous marker's color to the default color
+            previousMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)); // Default light blue
+            previousMarker.setZIndex(0.0f);
+        }
+
+        // Set the color of the current clicked marker
+        marker.setIcon(getMarkerIconFromColor(R.color.colorPrimary));
     }
 
     private void updateOfferPopup(Offer offer) {
