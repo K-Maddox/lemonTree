@@ -531,6 +531,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                         GeoPoint offerLocation = document.getGeoPoint("location");
                         String title = document.getString("offerName");
+
+                        // Determine distance to offer
+                        if (offerLocation != null) {
+                            float[] results = new float[1];
+                            Location.distanceBetween(location.getLatitude(),
+                                    location.getLongitude(), offerLocation.getLatitude(),
+                                    offerLocation.getLongitude(),
+                                    results);
+                            float distanceInMeters = results[0];
+                            float distanceInKilometers = distanceInMeters / 1000;
+                            Log.v("getOffersInRadius",
+                                    "Offer: " + title + " Distance: " + distanceInKilometers +
+                                            " km");
+                            o.distance = String.format("%.2f km", distanceInKilometers);
+
+                            // Add marker to map
+                            LatLng offerLatLng = new LatLng(offerLocation.getLatitude(), offerLocation.getLongitude());
+                            Marker marker = myMap.addMarker(new MarkerOptions()
+                                    .position(offerLatLng)
+                                    .title(o.getOfferName())
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                            marker.setTag(o); // Store the offer object in the marker's tag
                         } else {
                             o.distance = "unknown";
                         }
