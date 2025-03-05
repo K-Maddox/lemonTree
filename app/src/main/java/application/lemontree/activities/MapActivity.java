@@ -504,6 +504,44 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 location.getLongitude() - ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
         double upperLng =
                 location.getLongitude() + ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+
+        db.collection("offers")
+                .whereGreaterThanOrEqualTo("location", new GeoPoint(lowerLat, lowerLng))
+                .whereLessThanOrEqualTo("location", new GeoPoint(upperLat, upperLng))
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.isEmpty()) {
+                        offerList.clear();
+                        myMap.clear();
+                        Toast.makeText(getApplicationContext(), "No offers found in radius", Toast.LENGTH_SHORT).show();
+                        Log.i("getOffersInRadius", "No offers found in radius");
+                        return;
+                    }
+
+                    offerList.clear();
+                    myMap.clear();
+
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        Offer o = getOfferFromDocumentSnapshot(document);
+
+                        // Filter out non-active offers
+                        if (!"active".equalsIgnoreCase(o.getStatus())) {
+                            continue;
+                        }
+
+                        GeoPoint offerLocation = document.getGeoPoint("location");
+                        String title = document.getString("offerName");
+                        } else {
+                            o.distance = "unknown";
+                        }
+
+                        offerList.add(o);
+                    }
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("getOffersInRadius", "Error getting documents", e);
+                });
     }
 
     public void getWantsInRadius(GeoPoint location) {
