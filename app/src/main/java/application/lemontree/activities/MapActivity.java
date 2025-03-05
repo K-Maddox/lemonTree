@@ -487,6 +487,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+
+    /**
+     * Get all offers from Firestore in a given radius from a given location
+     *
+     * @param location user's location
+     */
+    @SuppressLint("DefaultLocale")
+    public void getOffersInRadius(GeoPoint location) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Approximate conversion from kilometers to degrees
+        double lowerLat = location.getLatitude() - ((double) radius / 110);
+        double upperLat = location.getLatitude() + ((double) radius / 110);
+        double lowerLng =
+                location.getLongitude() - ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+        double upperLng =
+                location.getLongitude() + ((double) radius / (110 * Math.cos(Math.toRadians(location.getLatitude()))));
+    }
+
     public void getWantsInRadius(GeoPoint location) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         double lowerLat = location.getLatitude() - ((double) radius / 110);
