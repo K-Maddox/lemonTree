@@ -355,6 +355,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return BitmapDescriptorFactory.defaultMarker(hsv[0]);
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        int colorPrimary = ContextCompat.getColor(this, R.color.colorPrimary);
+
+        Object tag = marker.getTag();
+        if (tag instanceof Offer) {
+            Offer offer = (Offer) tag;
+            updateOfferPopup(offer);
+        } else if (tag instanceof Want) {
+            Want want = (Want) tag;
+            updateWantPopup(want);
+        }
+    }
+
     private void updateOfferPopup(Offer offer) {
         // Initialize the views in the popup layout
         TextView offerTitleTextView = popupView.findViewById(R.id.offerTitleTextView);
