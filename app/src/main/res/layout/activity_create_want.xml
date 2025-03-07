@@ -124,4 +124,16 @@
         </LinearLayout>
     </ScrollView>
 
+    <!-- Submit Button pinned to bottom -->
+    <Button
+        android:id="@+id/submitWantButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Post Offer" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
