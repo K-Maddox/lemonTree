@@ -54,7 +54,33 @@
                 android:layout_gravity="center" />
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp">
 
+            <!-- ImageView with rounded corners -->
+            <ImageView
+                android:id="@+id/satelliteIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/icon_satellite"
+                android:scaleType="centerInside" />
+
+            <!-- Button for Satellite Map -->
+            <Button
+                android:id="@+id/mapTypeSatellite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Satellite"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:background="?attr/selectableItemBackground"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
