@@ -16,5 +16,45 @@
         android:layout_gravity="center"
         android:paddingBottom="16dp" />
 
+    <!-- Row for the buttons -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginLeft="55dp"
+        android:paddingTop="8dp">
+
+        <!-- Button for Normal Map -->
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <!-- ImageView with rounded corners -->
+            <ImageView
+                android:id="@+id/defaultIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/ic_default_map_type"
+                android:clipToOutline="true" />
+
+            <!-- Button for Normal Map-->
+            <Button
+                android:id="@+id/mapTypeNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Default"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:background="?attr/selectableItemBackground"
+                android:layout_gravity="center" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>
