@@ -7,4 +7,12 @@
     android:paddingBottom="8dp"
     android:orientation="horizontal"
     android:id="@+id/chatmessageContainer">
+
+    <TextView
+        android:id="@+id/textChatMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="16sp"
+        tools:text="Hello!" />
 </LinearLayout>
