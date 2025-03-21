@@ -24,4 +24,30 @@
         app:layout_constraintStart_toEndOf="@id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/text_mes_itemname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="5dp"
+        android:text="Limes"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/text_mes_username"
+        app:layout_constraintStart_toEndOf="@id/imageView" />
+
+
+    <TextView
+        android:id="@+id/text_mes_lastMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/gray"
+        android:text="district"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/imageView"
+        app:layout_constraintTop_toBottomOf="@id/text_mes_itemname" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
