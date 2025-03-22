@@ -252,4 +252,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/imageCard" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Bottom Navigation (Placeholder for any navigation components) -->
+    <FrameLayout
+        android:id="@+id/nav_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
