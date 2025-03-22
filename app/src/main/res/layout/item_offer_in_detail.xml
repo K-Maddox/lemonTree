@@ -226,5 +226,30 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/lemon" />
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/createdByUsernameTextView"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="5dp"
+            android:text="Creator Username"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/chatButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageCard" />
+
+        <Button
+            android:id="@+id/chatButton"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="50dp"
+            android:text="Chat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageCard" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
