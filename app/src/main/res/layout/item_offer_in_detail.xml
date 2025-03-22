@@ -201,4 +201,30 @@
                 android:text="Archive Offer" />
         </LinearLayout>
     </ScrollView>
+
+    <!-- Creator Card and Chat Button -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/offerCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imageCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="30dp"
+            app:cardCornerRadius="40dp">
+
+            <ImageView
+                android:id="@+id/profileImageView"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/lemon" />
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
