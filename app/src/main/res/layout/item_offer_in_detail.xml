@@ -69,4 +69,136 @@
                     android:textSize="16sp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+
+                <!-- Value for Offer Name -->
+                <TextView
+                    android:id="@+id/offerTitleTextView"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:text="Offer Title"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@id/labelOfferName"
+                    app:layout_constraintTop_toTopOf="@id/labelOfferName" />
+
+                <!-- Label for Category -->
+                <TextView
+                    android:id="@+id/labelCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingBottom="15dp"
+                    app:layout_constraintTop_toBottomOf="@id/offerTitleTextView"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <!-- Value for Category -->
+                <TextView
+                    android:id="@+id/categoryTextView"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:text="Category"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@id/labelCategory"
+                    app:layout_constraintTop_toBottomOf="@id/offerTitleTextView" />
+
+                <!-- Label for Description -->
+                <TextView
+                    android:id="@+id/labelDescriptionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:paddingBottom="15dp"
+                    android:text="Description:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="@+id/offerDescriptionTextView"
+                    app:layout_constraintBottom_toBottomOf="@+id/offerDescriptionTextView"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <!-- Offer Description -->
+                <TextView
+                    android:id="@+id/offerDescriptionTextView"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:text="Description"
+                    android:textSize="16sp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@id/labelDescriptionTextView"
+                    app:layout_constraintTop_toBottomOf="@id/categoryTextView" />
+
+                <!-- Label for Available Date -->
+                <TextView
+                    android:id="@+id/labelAvailableDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Available till:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:paddingBottom="15dp"
+                    app:layout_constraintTop_toBottomOf="@id/offerDescriptionTextView"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <!-- Value for Available Date -->
+                <TextView
+                    android:id="@+id/offerAvailableDateTextView"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:text="Available Date"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@id/labelAvailableDate"
+                    app:layout_constraintTop_toBottomOf="@id/offerDescriptionTextView" />
+
+                <!-- Label for Pick Up Location -->
+                <TextView
+                    android:id="@+id/labelPickUpLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pick Up In:"
+                    android:paddingBottom="15dp"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/offerAvailableDateTextView"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <!-- Value for Pick Up Location -->
+                <TextView
+                    android:id="@+id/offerPickUpLocationTextView"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="15dp"
+                    android:text="Pick Up Location"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@id/labelPickUpLocation"
+                    app:layout_constraintTop_toBottomOf="@id/offerAvailableDateTextView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Archive Button -->
+            <Button
+                android:id="@+id/archiveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:text="Archive Offer" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
