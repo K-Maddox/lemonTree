@@ -26,4 +26,47 @@
             android:gravity="center_vertical" />
     </com.google.android.material.appbar.MaterialToolbar>
 
+    <!-- ScrollView for the rest of the content -->
+    <ScrollView
+        android:id="@+id/offerDetails"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <!-- Offer Image -->
+            <ImageView
+                android:id="@+id/offerImageView"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/lemon" />
+
+            <!-- Horizontal Layout to hold labels and values -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="15dp">
+
+                <!-- Label for Offer Name -->
+                <TextView
+                    android:id="@+id/labelOfferName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Offer: "
+                    android:paddingBottom="15dp"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 </LinearLayout>
