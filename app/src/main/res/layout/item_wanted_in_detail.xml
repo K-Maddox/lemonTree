@@ -5,4 +5,30 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="0dp">
+
+    <!-- Top Bar with elevation -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/offerDetailTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:layout_marginBottom="18dp">
+
+        <TextView
+            android:id="@+id/offerDetailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wanted Item Detail"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:gravity="center_vertical" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- Bottom Navigation (Placeholder for any navigation components) -->
+    <FrameLayout
+        android:id="@+id/nav_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
