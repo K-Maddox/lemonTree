@@ -37,4 +37,18 @@
         android:drawableTint="@color/gray"
         android:layout_gravity="fill" />
 
+    <Button
+        android:id="@+id/btn_nav_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:drawableTop="@drawable/ic_message"
+        android:text="Message"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:textColor="@color/gray"
+        android:backgroundTint="@color/white"
+        android:drawableTint="@color/gray"
+        android:layout_gravity="fill" />
+
 </GridLayout>
