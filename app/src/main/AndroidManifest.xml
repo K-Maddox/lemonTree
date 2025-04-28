@@ -26,9 +26,14 @@
         android:theme="@style/Theme.LemonTree"
         tools:targetApi="31" />
 
-    <!-- Default notification icon -->
-    <meta-data
-        android:name="com.google.firebase.messaging.default_notification_icon"
-        android:resource="@drawable/lemonicon" />
+        <!-- Default notification icon -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/lemonicon" />
+
+        <activity android:name=".activities.CreateOfferActivity"></activity>
+        <activity android:name=".activities.CreateWantActivity"></activity>
+
+    </application>
 
 </manifest>
