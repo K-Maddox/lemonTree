@@ -33,6 +33,9 @@
 
         <activity android:name=".activities.CreateOfferActivity"></activity>
         <activity android:name=".activities.CreateWantActivity"></activity>
+        <activity android:name=".activities.OfferActivity" />
+        <activity android:name=".activities.Profile" />
+        <activity android:name=".activities.WantedActivity" />
 
     </application>
 
