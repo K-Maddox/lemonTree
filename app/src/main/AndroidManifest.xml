@@ -44,6 +44,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ChatActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="OPEN_CHAT" />  <!-- This matches the click_action -->
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
     </application>
 
