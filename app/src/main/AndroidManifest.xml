@@ -85,6 +85,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/my_map_api_key" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="lemontreefirebase.activities.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <service
             android:name=".services.MyFirebaseMessagingService"
             android:exported="false">
