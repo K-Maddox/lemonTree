@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">lemonTree</string>
     <string name="capture_image">Offer Item Image</string>
+    <string name="open_camera">Capture Image</string>
 </resources>
