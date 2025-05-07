@@ -3,4 +3,5 @@
     <string name="capture_image">Offer Item Image</string>
     <string name="open_camera">Capture Image</string>
     <string name="open_gallery">Gallery Image Selection</string>
+    <string name="search">Search</string>
 </resources>
