@@ -9,4 +9,5 @@
     <string name="my_map_api_key">API Key Here</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
 </resources>
