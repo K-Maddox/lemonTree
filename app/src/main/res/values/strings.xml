@@ -24,4 +24,9 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="search_radius">Search Radius (km):</string>
     <string name="_5">5</string>
+    <string name="filter_location">Filter Location</string>
+
+    <!-- House rules on sign up -->
+    <string name="signup_success_message">Thank you for joining! This is a community marketplace powered by generosity, where everything is shared freely—nothing is for sale. If you need something, feel free to make a request. If you have something to give, post it for someone who might need it. Please be kind, respectful, and remember: this space is all about giving and receiving. When life gives you lemons, make new friends!</string>
+
 </resources>
