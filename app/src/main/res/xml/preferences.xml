@@ -6,6 +6,9 @@
             android:key="profile_name"
             android:title="Username"
             android:summary="Your username" />
-
+        <Preference
+            android:key="profile_email"
+            android:title="Email"
+            android:summary="Your email address" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
