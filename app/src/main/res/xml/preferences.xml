@@ -25,5 +25,11 @@
             android:title="For new Offers"
             android:defaultValue="true" />
 
+        <SwitchPreferenceCompat
+            android:dependency="notifications"
+            android:key="newchats"
+            android:title="For new Chat Messages"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
