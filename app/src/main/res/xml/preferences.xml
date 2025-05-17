@@ -11,4 +11,12 @@
             android:title="Email"
             android:summary="Your email address" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Notifications">
+
+        <SwitchPreferenceCompat
+            android:key="notifications"
+            android:title="Allow Notifications"
+            android:defaultValue="true" />
+
+    </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
