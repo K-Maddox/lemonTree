@@ -18,5 +18,12 @@
             android:title="Allow Notifications"
             android:defaultValue="true" />
 
+        <SwitchPreferenceCompat
+            android:key="newoffers"
+            android:dependency="notifications"
+            android:summary="within 5 kilometers of your location"
+            android:title="For new Offers"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
