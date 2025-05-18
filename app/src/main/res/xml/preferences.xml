@@ -32,4 +32,10 @@
             android:defaultValue="true" />
 
     </PreferenceCategory>
+
+    <!-- Logout section -->
+    <PreferenceCategory android:title="Account">
+        <Preference
+
+    </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
