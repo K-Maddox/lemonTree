@@ -36,6 +36,8 @@
     <!-- Logout section -->
     <PreferenceCategory android:title="Account">
         <Preference
-
+            android:key="logout_preference"
+            android:title="Logout"
+            android:summary="Click to sign out of your account" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>
