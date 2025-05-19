@@ -7,5 +7,10 @@
         <item name="floatingActionButtonStyle">@style/CustomFABStyle</item>
     </style>
 
+    <!--    Custom BUTTON Style-->
+    <style name="CustomButton" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/btn_background</item>
+        <item name="cornerRadius">5dp</item>
+    </style>
 
 </resources>
