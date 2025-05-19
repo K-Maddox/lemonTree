@@ -13,4 +13,13 @@
         <item name="cornerRadius">5dp</item>
     </style>
 
+    <!--    Custom Floating Action Button Style-->
+    <style name="CustomFABStyle" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="shapeAppearanceOverlay">@style/CustomFABShape</item>
+    </style>
+
+    <style name="CustomFABShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>
