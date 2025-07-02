@@ -38,4 +38,5 @@ dependencies {
     androidTestImplementation libs.espresso.core
     implementation libs.firebase.auth
     implementation libs.firebase.storage
+    implementation libs.firebase.firestore
 }
